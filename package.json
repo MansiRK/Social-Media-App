@@ -1,0 +1,27 @@
+{
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "mongodb": "^5.6.0",
+    "mongoose": "^7.3.1",
+    "nodemon": "^2.0.22"
+  },
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "name": "social-media-app",
+  "description": "A app where you can connect with your friends, add posts, comments and many more.",
+  "version": "1.0.0",
+  "main": "server.js",
+  "type": "commonjs",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MansiRK/Social-media-app.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MansiRK/Social-media-app/issues"
+  },
+  "homepage": "https://github.com/MansiRK/Social-media-app#readme"
+}
