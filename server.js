@@ -29,5 +29,6 @@ app.use("/auth", Routes.authRouter)
 app.listen(process.env.PORT, (error) =>{
     if (error)
         console.log("Server unable to start: ", error)
+        
     console.log(`Sever is running on port: ${process.env.PORT}` )
 })

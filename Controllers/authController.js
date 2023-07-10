@@ -1,22 +1,29 @@
 const UserModel = require("../Models/userModel")
 const bcrypt = require("bcrypt")
 
-exports.registerUser = async(req, res) => {
-    const {username, password, firstname, lastname} = req.body
+
+// Registering new user
+exports.registerUser = async (req, res) => {
+    const { username, password, firstname, lastname } = req.body
+
+    const salt = await bcrypt.genSalt(10)
+
+    const hashed_password = await bcrypt.hash(password, salt)
 
     const newUser = new UserModel(
-        {username, password, firstname, lastname}
+        { username, password: hashed_password, firstname, lastname }
     )
-    
+
     // to interact with server
 
-    try{
+    try {
         await newUser.save()
         res.status(200)
-        .json(newUser)
-    }catch(error){
-        res.status(500).json({message: error.message})
+            .json(newUser)
+    } catch (error) {
+        res.status(500).json({ message: error.message })
     }
 }
 
-   
+
+
