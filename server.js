@@ -4,7 +4,6 @@ const dotenv = require("dotenv")
 const connectToDatabase = require("./configs/db")
 const Routes = require("./Routes")
 
-
 //initialize expree app
 const app = express()
 
@@ -29,6 +28,6 @@ app.use("/auth", Routes.authRouter)
 app.listen(process.env.PORT, (error) =>{
     if (error)
         console.log("Server unable to start: ", error)
-        
+
     console.log(`Sever is running on port: ${process.env.PORT}` )
 })
