@@ -31,7 +31,15 @@ const UserSchema = mongoose.Schema(
     },
     profilePicture : String,
     coverPicture: String,
-    about: String,
+    gender: {
+        type: String,
+        default: "male"
+    },
+    about: {
+        type: String,
+        default: "",
+        maxlength: 200
+    },    
     livesIn: String,
     worksAt: String,
 

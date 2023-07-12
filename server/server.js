@@ -27,6 +27,7 @@ app.use(cookieParser());
 
 //including other routes
 app.use("/auth", Routes.authRouter)
+app.use("/users", Routes.userRouter)
 
 app.listen(process.env.PORT, (error) =>{
     if (error)
