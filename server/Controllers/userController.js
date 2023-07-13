@@ -1,3 +1,4 @@
+const { rawListeners } = require("../Models/postModel")
 const UserModel = require("../Models/userModel")
 
 const searchUser = async(req, res) =>{
@@ -56,6 +57,47 @@ const updateUser = async(req, res) =>{
         return res.status(500).json({
             message: `Failed to update profile. ${err.message}`
         })
+    }
+}
+
+const followUser = async(req, res) => {
+    try{
+        const user = await UserModel.find({
+            _id: req.params.id,
+            followers: req.user._id
+        })
+
+        if(user.length > 0){
+            return res.status(500).json({
+                message: "You are already following this user."
+            })
+        }
+
+        await UserModel.findOneAndUpdate({
+            _id: req.params.id
+        }, {
+            $push: {
+                followers: req.user._id
+            }
+        },{
+            new: true
+        })
+
+        await UserModel.findOneAndUpdate({
+            _id: req.user._id
+        },{
+            $push:{
+                following: req.params.id
+            }
+        },{
+            new: true
+        })
+        res.status(200).json({
+            message: "You are now following this user."
+        })
+    }
+    catch(err){
+
     }
 }
 
