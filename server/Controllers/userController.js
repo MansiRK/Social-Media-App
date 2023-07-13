@@ -1,4 +1,3 @@
-const { rawListeners } = require("../Models/postModel")
 const UserModel = require("../Models/userModel")
 
 const searchUser = async(req, res) =>{

@@ -47,12 +47,16 @@ const UserSchema = mongoose.Schema(
     worksAt: String,
 
     followers: [
-        {type: mongoose.Types.ObjectId, 
-            ref: 'user'
+        {
+            type: mongoose.Types.ObjectId, 
+            ref: 'users'
         }
     ],
     following: [
-        
+        {
+            type: mongoose.Types.ObjectId, 
+            ref: 'users'
+        }
     ]
 },
 
@@ -61,6 +65,6 @@ const UserSchema = mongoose.Schema(
 }
 )
 
-const UserModel = mongoose.model("Users", UserSchema)
+const UserModel = mongoose.model("users", UserSchema)
 
 module.exports = UserModel

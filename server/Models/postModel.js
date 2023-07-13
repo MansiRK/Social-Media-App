@@ -1,31 +1,35 @@
 const mongoose = require("mongoose")
 
 const PostSchema = new mongoose.Schema({
-    content: String,
+
+    caption: String,
+
     images:{
         type: Array,
-        required: true
+        required: true,
+        default: []
     },
     likes:[
         {
         type: mongoose.Types.ObjectId,
-        ref: "user"
+        ref: "users"
         }
     ],
     comments: [
         {
             type: mongoose.Types.ObjectId,
-            ref: "user"
+            ref: "users"
         }
     ],
     user: {
         type: mongoose.Types.ObjectId,
-        ref: "user"
+        ref: "users"
     }
     
 }, {
     timestamps: true
-})
+}
+)
 
 const PostModel = mongoose.model("Posts", PostSchema)
 
