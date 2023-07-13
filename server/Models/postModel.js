@@ -18,6 +18,10 @@ const PostSchema = new mongoose.Schema({
             ref: "user"
         }
     ],
+    user: {
+        type: mongoose.Types.ObjectId,
+        ref: "user"
+    }
     
 }, {
     timestamps: true
