@@ -4,7 +4,7 @@ const router = express.Router()
 
 router.get("/search", userController.searchUser)
 
-router.get("/user/:id", userController.getUser)
+router.get("/user/:_id", userController.getUser)
 
 router.patch("/user", userController.updateUser)
 

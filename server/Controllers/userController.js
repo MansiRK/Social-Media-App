@@ -7,10 +7,21 @@ const searchUser = async(req, res) =>{
                 $regex: req.query.username
             }
         }).limit(10).select("firstname lastname username profilePicture")
+        
+        if(!users){
+            res.status(400).json({
+                message: "Users not found."
+            })
+        }
+
+        res.status(200).json({
+            message: "Users found successfully.",
+            users
+        })
     }
     catch(err){
         return res.status(500).json({
-            message: `Error in searching User. ${err.message}`
+            message: `Error in searching users. ${err.message}`
         })
     }
 }
@@ -18,17 +29,24 @@ const searchUser = async(req, res) =>{
 
 const getUser = async(req, res) =>{
     try{
-        const user = await UserModel.findById(req.params.id).select("-password")
+        const user = await UserModel.findById(req.params._id).select("-password")
         .populate("followers following", "-password")
 
         if(!user){
             return res.status(400).json({
-                message: `User does not exist. ${err.message}`
+                message: "User does not exist."
             })
         }
+
+        res.status(200).json({
+            message: "Got user successfully.",
+            user
+        })
     }
     catch(err){
-        
+        res.status(500).json({
+            message: `Error in getting the user. ${err.message}`
+        })
     }
 } 
 
@@ -43,7 +61,7 @@ const updateUser = async(req, res) =>{
         }
 
         await UserModel.findOneAndUpdate({
-            _id: req.user._id
+            _id: req.users._id
         },{
             profilePicture, coverPicture, firstname, lastname, about, livesIn, worksAt, gender
         })
@@ -63,7 +81,7 @@ const followUser = async(req, res) => {
     try{
         const user = await UserModel.find({
             _id: req.params.id,
-            followers: req.user._id
+            followers: req.users._id
         })
 
         if(user.length > 0){
@@ -72,18 +90,18 @@ const followUser = async(req, res) => {
             })
         }
 
-        await UserModel.findOneAndUpdate({
+        const newUser = await UserModel.findOneAndUpdate({
             _id: req.params.id
         }, {
             $push: {
-                followers: req.user._id
+                followers: req.users._id
             }
         },{
             new: true
-        })
+        }).populate("followers following", "-password")
 
         await UserModel.findOneAndUpdate({
-            _id: req.user._id
+            _id: req.users._id
         },{
             $push:{
                 following: req.params.id
@@ -92,7 +110,8 @@ const followUser = async(req, res) => {
             new: true
         })
         res.status(200).json({
-            message: "You are now following this user."
+            message: "You are now following this user.",
+            newUser
         })
     }
     catch(err){
@@ -104,18 +123,29 @@ const followUser = async(req, res) => {
 
 const unfollowUser = async(req, res) => {
     try{
-        await UserModel.findOneAndUpdate({
+        const notExistUser = await UserModel.find({
+            _id: req.params.id,
+            following: req.users._id
+        })
+
+        if(notExitUser.length < 0){
+            return res.status(500).json({
+                message: "You are already not following this user."
+            })
+        }
+
+        const user = await UserModel.findOneAndUpdate({
             _id: req.params.id
         },{
             $pull: {
-                followers: req.user._id
+                followers: req.users._id
             }
         },{
             new: true
         })
 
         await UserModel.findOneAndUpdate({
-            _id: req.user._id
+            _id: req.users._id
         },{
             $pull: {
                 following: req.params.id
@@ -125,7 +155,8 @@ const unfollowUser = async(req, res) => {
         })
 
         res.status(200).json({
-            message: "You successfully unfollowed this user."
+            message: "You successfully unfollowed this user.",
+            user
         })
     }
     catch(err){

@@ -10,7 +10,7 @@ const createPost = async(req, res) =>{
             })
         }
         const newPost = new PostModel({
-            caption, images, user : req.user._id
+            caption, images, users: req.users._id
         })
 
         await newPost.save()
@@ -28,12 +28,12 @@ const createPost = async(req, res) =>{
 
 const getPosts = async(req, res) => {
     try{
-        console.log(req.user)
+        console.log(req.users)
 
         const posts = await PostModel.find({
-            user: [...req.user.following,
-            req.user._id]
-        }).populate("user likes", "profilePicture username firstname lastname")
+            users: [...req.users.following,
+            req.users._id]
+        }).populate("users likes", "profilePicture username firstname lastname")
 
         res.json({
             message: "Successfully got the post.",
@@ -54,7 +54,7 @@ const updatePost = async(req, res) => {
 
         const post = await PostModel.findOneAndUpdate({
             _id: req.params.id
-        }).populate("user likes", "profilePicture username fistname lastname")
+        }).populate("users likes", "profilePicture username fistname lastname")
 
         res.status(200).json({
             message: "Post updated successfully.",
@@ -65,13 +65,40 @@ const updatePost = async(req, res) => {
             }
         })
     }
-    catch(err){
+    catch(err)
+    {
+       res.send(500).json({
         message: `Error in updating the post. ${err.message}`
+       }) 
+    }
+}
+
+const likePosts = async(req, res) => {
+    try{
+        await PostModel.findOneAndUpdate({
+        _id: req.params.id
+        },{
+            $push: {
+                likes: req.users._id
+            }
+        },{
+            new: true
+        })
+
+        res.status(200).json({
+            message: "Post liked successfully."
+        })
+    }
+    catch(err){
+        res.status(500).json({
+            message: `Failed to like the post. ${err.message}`
+        })
     }
 }
 
 module.exports= {
     createPost,
     getPosts,
-    updatePost
+    updatePost,
+    likePosts
 }
