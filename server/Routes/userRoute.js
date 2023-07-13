@@ -8,4 +8,9 @@ router.get("/user/:id", userController.getUser)
 
 router.patch("/user", userController.updateUser)
 
+router.patch("/user/:id/follow", userController.followUser)
+
+router.patch("/user/:id/unfollow", userController.unfollowUser)
+
+
 module.exports = router

@@ -97,12 +97,49 @@ const followUser = async(req, res) => {
         })
     }
     catch(err){
+        res.status(500).json({
+            message: `Error in following user. ${err.message}`
+        })
+    }
+}
 
+const unfollowUser = async(req, res) => {
+    try{
+        await UserModel.findOneAndUpdate({
+            _id: req.params.id
+        },{
+            $pull: {
+                followers: req.user._id
+            }
+        },{
+            new: true
+        })
+
+        await UserModel.findOneAndUpdate({
+            _id: req.user._id
+        },{
+            $pull: {
+                following: req.params.id
+            }
+        },{
+            new: true
+        })
+
+        res.status(200).json({
+            message: "You successfully unfollowed this user."
+        })
+    }
+    catch(err){
+        res.status(500).json({
+            message: `Error in unfollowing the user. ${err.message}`
+        })
     }
 }
 
 module.exports = {
     searchUser,
     getUser,
-    updateUser
+    updateUser,
+    followUser,
+    unfollowUser
 }
