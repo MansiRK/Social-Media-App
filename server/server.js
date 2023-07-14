@@ -26,8 +26,15 @@ app.use(bodyParser.urlencoded({
 app.use(cookieParser());
 
 //including other routes
+
 app.use("/auth", Routes.authRouter)
+
 app.use("/users", Routes.userRouter)
+
+app.use("/posts", Routes.postRouter)
+
+app.use("/comments", Routes.commentRouter)
+
 
 app.listen(process.env.PORT, (error) =>{
     if (error)
