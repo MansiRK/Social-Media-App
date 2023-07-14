@@ -32,6 +32,40 @@ const createComment = async (req, res) => {
     }
 }
 
+const updateComment = async (req, res) => {
+    try {
+        const {caption} = req.body
+
+        await CommentModel.findOneAndUpdate(
+            {
+                _id: req.params.id,
+                users: req.users._id
+            },
+            {
+                caption
+            }
+        )
+
+        res.status(200).json({
+            message: "Updated comments successfully."
+        })
+    }
+    catch(err){
+        return res.status(500).json({
+            message: `Error in updating comments. ${err.message}`
+        })
+    }
+}
+
+const likeComment = async (req, res) => {
+    try{
+
+    }
+    catch(err){
+        
+    }
+}
+
 
 module.exports = {
     createComment

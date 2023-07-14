@@ -1,8 +1,7 @@
 const express = require("express");
-const bodyParser = require("body-parser")
 const dotenv = require("dotenv")
 const connectToDatabase = require("./configs/db")
-const Routes = require("./Routes")
+const Routes = require("./Routes/index")
 const cookieParser = require("cookie-parser");
 
 
@@ -15,13 +14,7 @@ dotenv.config()
 connectToDatabase()
 
 //middlewares
-app.use(bodyParser.json({
-    limit: "30mb", extended: true
-}))
-
-app.use(bodyParser.urlencoded({
-    limit: "30mb", extended: true
-}))
+app.use(express.json())
 
 app.use(cookieParser());
 
@@ -34,6 +27,8 @@ app.use("/users", Routes.userRouter)
 app.use("/posts", Routes.postRouter)
 
 app.use("/comments", Routes.commentRouter)
+
+
 
 
 app.listen(process.env.PORT, (error) =>{

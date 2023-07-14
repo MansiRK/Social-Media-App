@@ -1,13 +1,14 @@
 const express = require("express")
 const postController = require("../Controllers/postController")
 const router = express.Router()
+const auth = require("../middleware/auth")
 
-router.post("/create", postController.createPost)
+router.post("/create", auth, postController.createPost)
 
-router.get("/get", postController.getPosts)
+router.get("/get", auth,  postController.getPosts)
 
-router.patch("/update/post/:id", postController.updatePost)
+router.patch("/update/post/:id", auth, postController.updatePost)
 
-router.patch("/post/:id/like", postController.likePosts)
+router.patch("/post/:id/like", auth, postController.likePosts)
 
 module.exports = router
