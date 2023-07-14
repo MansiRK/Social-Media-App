@@ -65,6 +65,8 @@ const UserSchema = mongoose.Schema(
 }
 )
 
+
 const UserModel = mongoose.model("users", UserSchema)
+
 
 module.exports = UserModel

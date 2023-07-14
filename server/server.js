@@ -36,8 +36,6 @@ app.use("/posts", Routes.postRouter)
 app.use("/comments", Routes.commentRouter)
 
 
-
-
 app.listen(process.env.PORT, (error) =>{
     if (error)
         console.log("Server unable to start: ", error)

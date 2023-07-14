@@ -29,6 +29,7 @@ const searchUser = async(req, res) =>{
 
 const getUser = async(req, res) =>{
     try{
+
         const user = await UserModel.findById(req.params._id).select("-password")
         .populate("followers following", "-password")
 
@@ -66,7 +67,7 @@ const updateUser = async(req, res) =>{
             profilePicture, coverPicture, firstname, lastname, about, livesIn, worksAt, gender
         })
 
-        res.json({
+        res.status(200).json({
             message: "Updated Profile Successfully."
         })
     }
@@ -82,13 +83,15 @@ const followUser = async(req, res) => {
         const user = await UserModel.find({
             _id: req.params.id,
             followers: req.users._id
+
         })
 
         if(user.length > 0){
-            return res.status(500).json({
+            return res.status(400).json({
                 message: "You are already following this user."
             })
         }
+
 
         const newUser = await UserModel.findOneAndUpdate({
             _id: req.params.id
@@ -129,7 +132,7 @@ const unfollowUser = async(req, res) => {
         })
 
         if(notExitUser.length < 0){
-            return res.status(500).json({
+            return res.status(400).json({
                 message: "You are already not following this user."
             })
         }
