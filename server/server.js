@@ -33,6 +33,8 @@ app.use("/users", Routes.userRouter)
 
 app.use("/posts", Routes.postRouter)
 
+app.use("/comments", Routes.commentRouter)
+
 
 
 
