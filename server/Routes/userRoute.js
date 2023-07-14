@@ -1,16 +1,18 @@
 const express = require("express")
 const userController = require("../Controllers/userController")
 const router = express.Router()
+const auth = require("../middleware/auth")
 
-router.get("/search", userController.searchUser)
 
-router.get("/user/:_id", userController.getUser)
+router.get("/search", auth, userController.searchUser)
 
-router.patch("/user", userController.updateUser)
+router.get("/user/:_id", auth, userController.getUser)
 
-router.patch("/user/:id/follow", userController.followUser)
+router.patch("/user", auth, userController.updateUser)
 
-router.patch("/user/:id/unfollow", userController.unfollowUser)
+router.patch("/user/:id/follow", auth, userController.followUser)
+
+router.patch("/user/:id/unfollow", auth, userController.unfollowUser)
 
 
 module.exports = router

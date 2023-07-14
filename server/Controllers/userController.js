@@ -29,7 +29,6 @@ const searchUser = async(req, res) =>{
 
 const getUser = async(req, res) =>{
     try{
-
         const user = await UserModel.findById(req.params._id).select("-password")
         .populate("followers following", "-password")
 
@@ -83,7 +82,6 @@ const followUser = async(req, res) => {
         const user = await UserModel.find({
             _id: req.params.id,
             followers: req.users._id
-
         })
 
         if(user.length > 0){
@@ -91,7 +89,6 @@ const followUser = async(req, res) => {
                 message: "You are already following this user."
             })
         }
-
 
         const newUser = await UserModel.findOneAndUpdate({
             _id: req.params.id

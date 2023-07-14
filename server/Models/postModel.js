@@ -1,6 +1,7 @@
 const mongoose = require("mongoose")
 
 const PostSchema = new mongoose.Schema({
+
     caption: String,
 
     images:{
@@ -29,7 +30,6 @@ const PostSchema = new mongoose.Schema({
     timestamps: true
 }
 )
-
 
 const PostModel = mongoose.model("Posts", PostSchema)
 
