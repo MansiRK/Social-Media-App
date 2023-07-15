@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useHistory, Link } from 'react-router-dom'
 import { register } from '../redux/actions/authAction'
@@ -11,10 +11,10 @@ const Register = () => {
     const history = useHistory()
 
     const initialState = {
-        fullname: '', username: '', email: '', password: '', cf_password: '', gender: 'male'
+        firstname: '', lastname:'', username: '', email: '', password: '', cf_password: '', gender: 'male'
     }
     const [userData, setUserData] = useState(initialState)
-    const { fullname, username, email, password, cf_password } = userData
+    const { firstname, lastname, username, email, password, cf_password } = userData
 
     const [typePass, setTypePass] = useState(false)
     const [typeCfPass, setTypeCfPass] = useState(false)
@@ -33,48 +33,62 @@ const Register = () => {
         e.preventDefault()
         dispatch(register(userData))
     }
-   
+
     return (
         <div className='section'>
-        <div class= "register_page_container">
+            <div className="register_page_container">
                 <div className="register_page">
-                    <form onSubmit={handleSubmit }>
+                    <form onSubmit={handleSubmit}>
                         <h3 className="text-uppercase text-center mb-4">2MR Media</h3>
 
                         <div className="register-group">
-                            <label htmlFor="fullname">Full Name</label>
-                            <div className="pass"> 
-                            <input type={typePass ? "text": fullname} 
-                            className="register-control" id="fullname" name="fullname"
-                                onChange={handleChangeInput} value={fullname}
-                                style={{ background: `${alert.fullname ? '#fd2d6a14' : ''}` }} />
+                            <label htmlFor="firstname">First Name</label>
+                            <div className="pass">
+                                <input type={typePass ? "text" : firstname}
+                                    className="register-control" id="firstname" name="firstname"
+                                    onChange={handleChangeInput} value={firstname}
+                                    style={{ background: `${alert.firstname ? '#fd2d6a14' : ''}` }} />
 
-                            <small className="register-text register-danger">
-                                {alert.fullname ? alert.fullname : ''}
-                            </small>
+                                <small className="register-text register-danger">
+                                    {alert.firstname ? alert.firstname : ''}
+                                </small>
+                            </div>
                         </div>
+
+                        <div className="register-group">
+                            <label htmlFor="lastname">Last Name</label>
+                            <div className="pass">
+                                <input type={typePass ? "text" : username}
+                                    className="register-control" id="lastname" name="lastname"
+                                    onChange={handleChangeInput} value={lastname.toLowerCase().replace(/ /g, '')}
+                                    style={{ background: `${alert.lastname ? '#fd2d6a14' : ''}` }} />
+
+                                <small className="register-text register-danger">
+                                    {alert.lastname ? alert.lastname : ''}
+                                </small>
+                            </div>
                         </div>
 
                         <div className="register-group">
                             <label htmlFor="username">User Name</label>
-                            <div className="pass"> 
-                            <input type={typePass ? "text": username} 
-                            className="register-control" id="username" name="username"
-                                onChange={handleChangeInput} value={username.toLowerCase().replace(/ /g, '')}
-                                style={{ background: `${alert.username ? '#fd2d6a14' : ''}` }} />
+                            <div className="pass">
+                                <input type={typePass ? "text" : username}
+                                    className="register-control" id="username" name="username"
+                                    onChange={handleChangeInput} value={username.toLowerCase().replace(/ /g, '')}
+                                    style={{ background: `${alert.username ? '#fd2d6a14' : ''}` }} />
 
-                            <small className="register-text register-danger">
-                                {alert.username ? alert.username : ''}
-                            </small>
-                        </div>
+                                <small className="register-text register-danger">
+                                    {alert.username ? alert.username : ''}
+                                </small>
+                            </div>
                         </div>
 
                         <div className="register-group">
                             <label htmlFor="exampleInputEmail1">Email address</label>
-                            <div className="pass"> 
-                            <input type={typePass ? "text": fullname} 
-                            className="register-control" id="email address" name="email address"
-                                onChange={handleChangeInput} value={email}
+                            <div className="pass">
+                            <input type={typePass ? "text": "email"}
+                            className="register-control" id="exampleInputEmail1" 
+                                onChange={handleChangeInput} value={email} name="email"
                                 style={{ background: `${alert.email ? '#fd2d6a14' : ''}` }} />
 
                             <small className="register-text register-danger">
@@ -149,10 +163,10 @@ const Register = () => {
                         </p>
                     </form>
                 </div>
-                </div>
-                </div>
+            </div>
+        </div>
 
-           
+
     )
 }
 

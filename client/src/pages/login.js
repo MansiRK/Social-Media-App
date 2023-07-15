@@ -32,7 +32,7 @@ const Login = () => {
 
     return (
         <div className='whole-page'>
-        <div class= "auth_page_container">
+        <div className= "auth_page_container">
         <div className="auth_page">
             <form onSubmit={handleSubmit}>
                 <h3 className="text-uppercase text-center mb-4">2MR Media</h3>

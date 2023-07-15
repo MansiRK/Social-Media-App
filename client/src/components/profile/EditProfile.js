@@ -68,7 +68,7 @@ const EditProfile = ({setOnEdit}) => {
                         name="fullname" value={fullname} onChange={handleInput} />
                         <small className="text-danger position-absolute"
                         style={{top: '50%', right: '5px', transform: 'translateY(-50%)'}}>
-                            {fullname.length}/25
+                            {fullname ? fullname.length : 0}/25
                         </small>
                     </div>
                 </div>

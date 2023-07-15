@@ -11,9 +11,9 @@
 .register_page_container{
     position: relative;
     width: 400px;
-    height: 550px;
+    height: 600px;
     max-width: 400px;
-    max-height: 550px;
+    max-height: 6000px;
     background: #040717;
     border-radius: 50px 5px;
     display: flex;

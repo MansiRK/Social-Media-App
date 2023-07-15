@@ -50,6 +50,7 @@ img {
 
 /* -------- AUTH ---------- */
 @import url("./login.css");
+@import url("./register.css");
 
 /* -------- LOADING ---------- */
 @import url("./loading.css");
