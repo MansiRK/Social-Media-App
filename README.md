@@ -1,14 +1,21 @@
 
-# Social-media-app
-A app where you can connect with your friends, add posts, comments and many more.
+## Install dependencies for server 
+### `npm install`
 
+## Install dependencies for client
+### cd client ---> `npm install`
 
-# Back-end:
+## Connect to your mongodb and add info in .env
 
-1. Dependencies installed are:
+## Run the client & server with concurrently
+### `npm run dev`
 
-    a. express - 
-    b. mongoose - to connect node.js to mongodb
-    c. body-parser - middleware i.e it checks http request that comes from client side
-    d. nodemon - 
+## Run the Express server only
+### `npm run server`
+
+## Run the React client only
+### `npm run client`
+
+### Server runs on http://localhost:5000 and client on http://localhost:3000
+
 
