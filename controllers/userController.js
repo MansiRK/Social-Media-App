@@ -3,12 +3,12 @@ const UserModel = require('../models/userModel')
 
     const searchUser = async (req, res) => {
         try {
-            const UserModel = await UserModel.find({ username: { $regex: req.query.username } })
+            const users = await UserModel.find({ username: { $regex: req.query.username } })
                 .limit(10).select("firstname lastname username avatar")
 
             res.status(200).json({
                 message: "User searched successfully!",
-                UserModel
+                users
             })
 
         } catch (err) {
@@ -52,17 +52,20 @@ const UserModel = require('../models/userModel')
                 avatar, firstname, lastname, mobile, address, story, website, gender
             })
 
-            res.json({ message: "Update Success!" })
+            res.json({ message: "Updated user successfully!" })
 
         } catch (err) {
-            return res.status(500).json({ message: err.message })
+            return res.status(500).json({ message: `Failed to update user. ${err.message }`
+        })
         }
     }
 
     const followUser = async (req, res) => {
         try {
             const user = await UserModel.find({ _id: req.params.id, followers: req.user._id })
-            if (user.length > 0) return res.status(500).json({ message: "You followed this user." })
+            if (user.length > 0) return res.status(500).json(
+                { message: "You are already following this user." 
+            })
 
             const newUser = await UserModel.findOneAndUpdate({ _id: req.params.id }, {
                 $push: { followers: req.user._id }
@@ -72,10 +75,14 @@ const UserModel = require('../models/userModel')
                 $push: { following: req.params.id }
             }, { new: true })
 
-            res.json({ newUser })
+            res.status(200).json({ 
+                message: "You are now following this user.",
+                newUser
+             })
 
         } catch (err) {
-            return res.status(500).json({ message: err.message })
+            return res.status(500).json({ message: `Failed to follow user. ${err.message }`
+        })
         }
     }
 
@@ -90,10 +97,15 @@ const UserModel = require('../models/userModel')
                 $pull: { following: req.params.id }
             }, { new: true })
 
-            res.json({ newUser })
+            res.status(200).json(
+                { message: "You are now not following this user.",
+                newUser
+             })
 
         } catch (err) {
-            return res.status(500).json({ message: err.message })
+            return res.status(500).json(
+                { message: `Failed to unfollow user. ${err.message }`
+            })
         }
     }
 
@@ -103,20 +115,23 @@ const UserModel = require('../models/userModel')
 
             const num = req.query.num || 10
 
-            const UserModel = await UserModel.aggregate([
+            const users = await UserModel.aggregate([
                 { $match: { _id: { $nin: newArr } } },
                 { $sample: { size: Number(num) } },
                 { $lookup: { from: 'UserModel', localField: 'followers', foreignField: '_id', as: 'followers' } },
                 { $lookup: { from: 'UserModel', localField: 'following', foreignField: '_id', as: 'following' } },
             ]).project("-password")
 
-            return res.json({
-                UserModel,
-                result: UserModel.length
+            return res.status(200).json({
+                message: "Showing suggestions successfully!",
+                users,
+                result: users.length
             })
 
         } catch (err) {
-            return res.status(500).json({ message: err.message })
+            return res.status(500).json(
+                { message: `Failed to load suggestions. ${err.message }`
+            })
         }
     }
 

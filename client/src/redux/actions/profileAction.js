@@ -40,7 +40,7 @@ export const getProfileUsers = ({id, auth}) => async (dispatch) => {
     } catch (err) {
         dispatch({
             type: GLOBALTYPES.ALERT, 
-            payload: {error: err.response.data.msg}
+            payload: {error: err.response.data.message}
         })
     }
     
@@ -82,11 +82,11 @@ export const updateProfileUser = ({userData, avatar, auth}) => async (dispatch) 
             }
         })
 
-        dispatch({type: GLOBALTYPES.ALERT, payload: {success: res.data.msg}})
+        dispatch({type: GLOBALTYPES.ALERT, payload: {success: res.data.message}})
     } catch (err) {
         dispatch({
             type: GLOBALTYPES.ALERT, 
-            payload: {error: err.response.data.msg}
+            payload: {error: err.response.data.message}
         })
     }
 }
@@ -120,19 +120,19 @@ export const follow = ({users, user, auth, socket}) => async (dispatch) => {
         socket.emit('follow', res.data.newUser)
 
         // Notify
-        const msg = {
+        const message = {
             id: auth.user._id,
             text: 'has started to follow you.',
             recipients: [newUser._id],
             url: `/profile/${auth.user._id}`,
         }
 
-        dispatch(createNotify({msg, auth, socket}))
+        dispatch(createNotify({message, auth, socket}))
 
     } catch (err) {
         dispatch({
             type: GLOBALTYPES.ALERT, 
-            payload: {error: err.response.data.msg}
+            payload: {error: err.response.data.message}
         })
     }
 }
@@ -170,19 +170,19 @@ export const unfollow = ({users, user, auth, socket}) => async (dispatch) => {
         socket.emit('unFollow', res.data.newUser)
 
         // Notify
-        const msg = {
+        const message = {
             id: auth.user._id,
             text: 'has started to follow you.',
             recipients: [newUser._id],
             url: `/profile/${auth.user._id}`,
         }
 
-        dispatch(removeNotify({msg, auth, socket}))
+        dispatch(removeNotify({message, auth, socket}))
 
     } catch (err) {
         dispatch({
             type: GLOBALTYPES.ALERT, 
-            payload: {error: err.response.data.msg}
+            payload: {error: err.response.data.message}
         })
     }
 }

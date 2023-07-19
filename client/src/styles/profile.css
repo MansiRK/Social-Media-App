@@ -199,14 +199,14 @@
     border-radius: 30px;
 }
 
-.edit_profile .save-btn{
+.edit_profile .btn{
     width: 50px;
     height: 40px;
     border-radius: 30px;
     border: none;
 }
 
-.edit_profile .save-btn:hover{
+.edit_profile .btn:hover{
     background-color: blue;
 }
 

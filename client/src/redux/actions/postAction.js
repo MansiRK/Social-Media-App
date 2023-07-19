@@ -28,7 +28,7 @@ export const createPost = ({content, images, auth, socket}) => async (dispatch) 
         dispatch({ type: GLOBALTYPES.ALERT, payload: {loading: false} })
 
         // Notify
-        const msg = {
+        const message = {
             id: res.data.newPost._id,
             text: 'added a new post.',
             recipients: res.data.newPost.user.followers,
@@ -37,12 +37,12 @@ export const createPost = ({content, images, auth, socket}) => async (dispatch) 
             image: media[0].url
         }
 
-        dispatch(createNotify({msg, auth, socket}))
+        dispatch(createNotify({message, auth, socket}))
 
     } catch (err) {
         dispatch({
             type: GLOBALTYPES.ALERT,
-            payload: {error: err.response && err.response.data && err.response.data.msg}
+            payload: {error: err.response && err.response.data && err.response.data.message}
         })
     }
 }
@@ -62,7 +62,7 @@ export const getPosts = (token) => async (dispatch) => {
     } catch (err) {
         dispatch({
             type: GLOBALTYPES.ALERT,
-            payload: {error: err.response.data.msg}
+            payload: {error: err.response.data.message}
         })
     }
 }
@@ -87,11 +87,11 @@ export const updatePost = ({content, images, auth, status}) => async (dispatch) 
 
         dispatch({ type: POST_TYPES.UPDATE_POST, payload: res.data.newPost })
 
-        dispatch({ type: GLOBALTYPES.ALERT, payload: {success: res.data.msg} })
+        dispatch({ type: GLOBALTYPES.ALERT, payload: {success: res.data.message} })
     } catch (err) {
         dispatch({
             type: GLOBALTYPES.ALERT,
-            payload: {error: err.response.data.msg}
+            payload: {error: err.response.data.message}
         })
     }
 }
@@ -106,7 +106,7 @@ export const likePost = ({post, auth, socket}) => async (dispatch) => {
         await patchDataAPI(`post/${post._id}/like`, null, auth.token)
         
         // Notify
-        const msg = {
+        const message = {
             id: auth.user._id,
             text: 'like your post.',
             recipients: [post.user._id],
@@ -115,12 +115,12 @@ export const likePost = ({post, auth, socket}) => async (dispatch) => {
             image: post.images[0].url
         }
 
-        dispatch(createNotify({msg, auth, socket}))
+        dispatch(createNotify({message, auth, socket}))
 
     } catch (err) {
         dispatch({
             type: GLOBALTYPES.ALERT,
-            payload: {error: err.response.data.msg}
+            payload: {error: err.response.data.message}
         })
     }
 }
@@ -135,18 +135,18 @@ export const unLikePost = ({post, auth, socket}) => async (dispatch) => {
         await patchDataAPI(`post/${post._id}/unlike`, null, auth.token)
 
         // Notify
-        const msg = {
+        const message = {
             id: auth.user._id,
             text: 'like your post.',
             recipients: [post.user._id],
             url: `/post/${post._id}`,
         }
-        dispatch(removeNotify({msg, auth, socket}))
+        dispatch(removeNotify({message, auth, socket}))
 
     } catch (err) {
         dispatch({
             type: GLOBALTYPES.ALERT,
-            payload: {error: err.response.data.msg}
+            payload: {error: err.response.data.message}
         })
     }
 }
@@ -159,7 +159,7 @@ export const getPost = ({detailPost, id, auth}) => async (dispatch) => {
         } catch (err) {
             dispatch({
                 type: GLOBALTYPES.ALERT,
-                payload: {error: err.response.data.msg}
+                payload: {error: err.response.data.message}
             })
         }
     }
@@ -172,18 +172,18 @@ export const deletePost = ({post, auth, socket}) => async (dispatch) => {
         const res = await deleteDataAPI(`post/${post._id}`, auth.token)
 
         // Notify
-        const msg = {
+        const message = {
             id: post._id,
             text: 'added a new post.',
             recipients: res.data.newPost.user.followers,
             url: `/post/${post._id}`,
         }
-        dispatch(removeNotify({msg, auth, socket}))
+        dispatch(removeNotify({message, auth, socket}))
         
     } catch (err) {
         dispatch({
             type: GLOBALTYPES.ALERT,
-            payload: {error: err.response.data.msg}
+            payload: {error: err.response.data.message}
         })
     }
 }
@@ -197,7 +197,7 @@ export const savePost = ({post, auth}) => async (dispatch) => {
     } catch (err) {
         dispatch({
             type: GLOBALTYPES.ALERT,
-            payload: {error: err.response.data.msg}
+            payload: {error: err.response.data.message}
         })
     }
 }
@@ -211,7 +211,7 @@ export const unSavePost = ({post, auth}) => async (dispatch) => {
     } catch (err) {
         dispatch({
             type: GLOBALTYPES.ALERT,
-            payload: {error: err.response.data.msg}
+            payload: {error: err.response.data.message}
         })
     }
 }

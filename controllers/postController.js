@@ -33,7 +33,7 @@ const createPost = async (req, res) => {
         })
         await newPost.save()
 
-        resstatus(200).json({
+        res.status(200).json({
             message: 'Created post successfully!',
             newPost: {
                 ...newPost._doc,
@@ -53,20 +53,20 @@ const getPosts = async (req, res) => {
             user: [...req.user.following, req.user._id]
         }), req.query).paginating()
 
-        const PostModel = await features.query.sort('-createdAt')
+        const posts = await features.query.sort('-createdAt')
             .populate("user likes", "avatar username firstname lastname followers")
             .populate({
-                path: "CommentModel",
+                path: "comments",
                 populate: {
                     path: "user likes",
                     select: "-password"
                 }
             })
 
-        res.staus(200).json({
+        res.status(200).json({
             message: 'Fetched posts successfully!',
-            result: PostModel.length,
-            PostModel
+            result: posts.length,
+            posts
         })
 
     } catch (err) {
@@ -83,7 +83,7 @@ const updatePost = async (req, res) => {
             content, images
         }).populate("user likes", "avatar username firstname lastname")
             .populate({
-                path: "CommentModel",
+                path: "comments",
                 populate: {
                     path: "user likes",
                     select: "-password"
@@ -97,6 +97,7 @@ const updatePost = async (req, res) => {
                 content, images
             }
         })
+
     } catch (err) {
         return res.status(500).json(
             { message: `Failed to update post. ${err.message }`
@@ -153,16 +154,16 @@ const unLikePost = async (req, res) => {
     }
 }
 
-const getUserPost = async (req, res) => {
+const getUserPosts = async (req, res) => {
     try {
         const features = new APIfeatures(PostModel.find({ user: req.params.id }), req.query)
             .paginating()
-        const PostModel = await features.query.sort("-createdAt")
+        const posts = await features.query.sort("-createdAt")
 
         res.status(200).json({
             message: "Fetched single user posts successfully!",
-            PostModel,
-            result: PostModel.length
+            posts,
+            result: posts.length
         })
 
     } catch (err) {
@@ -177,7 +178,7 @@ const getPost = async (req, res) => {
         const post = await PostModel.findById(req.params.id)
             .populate("user likes", "avatar username firstname lastname followers")
             .populate({
-                path: "CommentModel",
+                path: "comments",
                 populate: {
                     path: "user likes",
                     select: "-password"
@@ -202,22 +203,22 @@ const getPost = async (req, res) => {
     }
 }
 
-const getPostExplore = async (req, res) => {
+const getPostDiscover = async (req, res) => {
     try {
 
         const newArr = [...req.user.following, req.user._id]
 
         const num = req.query.num || 9
 
-        const PostModel = await PostModel.aggregate([
+        const posts = await PostModel.aggregate([
             { $match: { user: { $nin: newArr } } },
             { $sample: { size: Number(num) } },
         ])
 
         return res.status(200).json({
             message: 'Fetched posts from explore successfully!',
-            result: PostModel.length,
-            PostModel
+            result: posts.length,
+            posts
         })
 
     } catch (err) {
@@ -230,7 +231,7 @@ const getPostExplore = async (req, res) => {
 const deletePost = async (req, res) => {
     try {
         const post = await PostModel.findOneAndDelete({ _id: req.params.id, user: req.user._id })
-        await CommentModel.deleteMany({ _id: { $in: post.CommentModel } })
+        await CommentModel.deleteMany({ _id: { $in: post.comments } })
 
         res.status(200).json({
             message: 'Deleted post successfully!',
@@ -300,12 +301,12 @@ const getSavePosts = async (req, res) => {
             _id: { $in: req.user.saved }
         }), req.query).paginating()
 
-        const savePostModel = await features.query.sort("-createdAt")
+        const savePosts = await features.query.sort("-createdAt")
 
         res.status(200).json({
             message: "Fetched saved posts successfully!",
-            savePostModel,
-            result: savePostModel.length
+            savePosts,
+            result: savePosts.length
         })
 
     } catch (err) {
@@ -322,9 +323,9 @@ module.exports = {
     updatePost,
     likePost,
     unLikePost,
-    getUserPost,
+    getUserPosts,
     getPosts,
-    getPostExplore,
+    getPostDiscover,
     deletePost,
     savePost,
     unSavePost,

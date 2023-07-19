@@ -94,14 +94,9 @@ img {
 
 @import url("./side-bar.css");
 
-/* -------- Message---------- */
-@import url("./message.css");
-
 /* -------- Icons---------- */
 @import url("./icons.css");
 
-/* -------- Call Modal---------- */
-@import url("./call_modal.css");
 
 
 
@@ -157,11 +152,8 @@ img {
   }
 }
 
-
-
-
-.mode{
+/* .mode{
   width: 100%;
   height: 100vh;
   overflow: hidden;
-}
+} */

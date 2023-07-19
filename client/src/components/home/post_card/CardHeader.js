@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import moment from 'moment'
 import { GLOBALTYPES } from '../../../redux/actions/globalTypes'
 import { deletePost } from '../../../redux/actions/postAction'
-import { BASE_URL } from '../../../utils/config'
+
 
 const CardHeader = ({post}) => {
     const { auth, socket } = useSelector(state => state)
@@ -22,10 +22,6 @@ const CardHeader = ({post}) => {
             dispatch(deletePost({post, auth, socket}))
             return history.push("/")
         }
-    }
-
-    const handleCopyLink = () => {
-        navigator.clipboard.writeText(`${BASE_URL}/post/${post._id}`)
     }
 
     return (
@@ -62,10 +58,7 @@ const CardHeader = ({post}) => {
                             </div>
                         </>
                     )}
-
-                    <div className="dropdown-item" onClick={handleCopyLink}>
-                        <span className="material-icons">content_copy</span> Copy Link
-                    </div>
+                    
                 </div>
             </div>
         </div>

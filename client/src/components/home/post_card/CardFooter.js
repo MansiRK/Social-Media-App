@@ -5,7 +5,6 @@ import LikeButton from '../../LikeButton'
 import { useSelector, useDispatch } from 'react-redux'
 import { likePost, unLikePost, savePost, unSavePost } from '../../../redux/actions/postAction'
 import ShareModal from '../../ShareModal'
-import { BASE_URL } from '../../../utils/config'
 
 
 const CardFooter = ({post}) => {
@@ -110,7 +109,7 @@ const CardFooter = ({post}) => {
             </div>
 
             {
-                isShare && <ShareModal url={`${BASE_URL}/post/${post._id}`} theme={theme} />
+                isShare && <ShareModal url={`$/post/${post._id}`} theme={theme} />
             }
         </div>
     )

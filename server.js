@@ -7,7 +7,7 @@ const SocketServer = require('./socketServer')
 const { ExpressPeerServer } = require('peer')
 const Routes = require('./routes/index')
 const path = require('path')
-
+const { ppid } = require('process')
 
 const app = express();
 
@@ -18,8 +18,6 @@ app.use(cookieParser())
 
 dotenv.config()
 
-//connecting database
-connectToDatabase()
 
 // Socket
 const http = require('http').createServer(app)
@@ -34,12 +32,15 @@ ExpressPeerServer(http, { path: '/' })
 
 
 // Routes
-app.use('/api/auth', Routes.authRouter)
-app.use('/api/user', Routes.userRouter)
-app.use('/api/post', Routes.postRouter)
-app.use('/api/comment', Routes.commentRouter)
-app.use('/api/notify', Routes.notifyRouter)
+app.use('/api', Routes.authRouter)
+app.use('/api', Routes.userRouter)
+app.use('/api', Routes.postRouter)
+app.use('/api', Routes.commentRouter)
+app.use('/api', Routes.notifyRouter)
 
+
+//connecting database
+connectToDatabase()
 
 
 if(process.env.NODE_ENV){

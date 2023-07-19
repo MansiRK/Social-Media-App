@@ -2,9 +2,9 @@ const router = require('express').Router()
 const auth = require('../middleware/auth')
 const notifyController = require('../controllers/notifyController')
 
-router.post('/', auth, notifyController.createNotify)
+router.post('/notify', auth, notifyController.createNotify)
 
-router.delete('/:id', auth, notifyController.removeNotify)
+router.delete('/notify/:id', auth, notifyController.removeNotify)
 
 router.get('/notifies', auth, notifyController.getNotifies)
 

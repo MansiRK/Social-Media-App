@@ -126,7 +126,7 @@ const EditProfile = ({setOnEdit}) => {
                 </div>
                 </div>
 
-                <button className="save-btn btn-info w-100" type="submit">Save</button>
+                <button className="btn btn-info w-100" type="submit">Save</button>
             </form>
         </div>
     )
