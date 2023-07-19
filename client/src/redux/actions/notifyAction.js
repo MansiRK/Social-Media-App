@@ -52,7 +52,7 @@ export const isReadNotify = ({message, auth}) => async (dispatch) => {
     try {
         await patchDataAPI(`/isReadNotify/${message._id}`, null, auth.token)
     } catch (err) {
-        dispatch({type: GLOBALTYPES.ALERT, payload: {error: err.response.data.message}})
+        dispatch({type: GLOBALTYPES.ALERT, payload: {error: err.response && err.response.data && err.response.data.message}})
     }
 }
 

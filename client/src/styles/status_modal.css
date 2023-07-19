@@ -106,3 +106,15 @@
 .status_body .dropdown-menu{
     transform: translate3d(-153px, -190px, 0px) !important;
 }
+
+.status_modal .status_footer .btn{
+    width: 200px;
+    height: 20px;
+    background-color: blue;
+    margin-left: 100px;
+}
+
+.status_modal .status_footer .btn:hover{
+    background-color: rgb(91, 91, 245);
+    color: white;
+}
