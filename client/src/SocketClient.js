@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from 'react-redux'
 import { POST_TYPES } from './redux/actions/postAction'
 import { GLOBALTYPES } from './redux/actions/globalTypes'
 import { NOTIFY_TYPES } from './redux/actions/notifyAction'
-// import { MESS_TYPES } from './redux/actions/messageAction'
 
 import audiobell from './audio/got-it-done-613.mp3'
 
@@ -25,11 +24,6 @@ const SocketClient = () => {
     const dispatch = useDispatch()
 
     const audioRef = useRef()
-
-    // joinUser
-    // useEffect(() => {
-    //     socket.emit('joinUser', auth.user)
-    // },[socket, auth.user])
 
     // Likes
     useEffect(() => {
@@ -95,7 +89,7 @@ const SocketClient = () => {
                 message.user.username + ' ' + message.text,
                 message.user.avatar,
                 message.url,
-                'V-NETWORK'
+                '2MR Media'
             )
         })
 
@@ -110,24 +104,6 @@ const SocketClient = () => {
         return () => socket.off('removeNotifyToClient')
     },[socket, dispatch])
 
-
-    // Message
-    // useEffect(() => {
-    //     socket.on('addMessageToClient', message =>{
-    //         dispatch({type: MESS_TYPES.ADD_MESSAGE, payload: message})
-
-    //         dispatch({
-    //             type: MESS_TYPES.ADD_USER, 
-    //             payload: {
-    //                 ...message.user, 
-    //                 text: message.text, 
-    //                 media: message.media
-    //             }
-    //         })
-    //     })
-
-    //     return () => socket.off('addMessageToClient')
-    // },[socket, dispatch])
 
     // Check User Online / Offline
     useEffect(() => {
@@ -164,25 +140,6 @@ const SocketClient = () => {
 
         return () => socket.off('CheckUserOffline')
     },[socket, dispatch])
-
-
-    // // Call User
-    // useEffect(() => {
-    //     socket.on('callUserToClient', data =>{
-    //         dispatch({type: GLOBALTYPES.CALL, payload: data})
-    //     })
-
-    //     return () => socket.off('callUserToClient')
-    // },[socket, dispatch])
-
-    // useEffect(() => {
-    //     socket.on('userBusy', data =>{
-    //         dispatch({type: GLOBALTYPES.ALERT, payload: {error: `${call.username} is busy!`}})
-    //     })
-
-    //     return () => socket.off('userBusy')
-    // },[socket, dispatch, call])
-
 
 
     return (

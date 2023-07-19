@@ -7,7 +7,6 @@ export const GLOBALTYPES = {
     SOCKET: 'SOCKET',
     ONLINE: 'ONLINE',
     OFFLINE: 'OFFLINE',
-    CALL: 'CALL',
     PEER: 'PEER'
 }
 

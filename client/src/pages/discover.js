@@ -27,9 +27,6 @@ const Discover = () => {
 
     return (
         <div>
-            {/* <div className='heading'>
-                <h3 className='d-flex align-text-center'>Explore new things here</h3>
-            </div> */}
             {
                 
                 discover.loading 
