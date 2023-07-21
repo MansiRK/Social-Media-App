@@ -27,6 +27,9 @@ module.exports = {
     'no-console': 2,
     semi: ['error', 'never'],
     quotes: ['error', 'single'],
-    linebreak-style: ['error', 'unix'],
+    'linebreak-style': ['error', 'unix'],
+    'react/react-in-jsx-scope': 'off',
+    'react/prop-types': 'off',
+    'react/no-array-index-key': 'off',
   },
 }
