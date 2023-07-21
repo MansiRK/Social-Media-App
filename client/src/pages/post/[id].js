@@ -31,7 +31,7 @@ const Post = () => {
 
             {
                 post.map(item => (
-                    <PostCard key={item._id} post={item} />
+                    <PostCard className="single-post" key={item._id} post={item} />
                 ))
             }
         </div>

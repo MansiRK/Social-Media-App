@@ -72,8 +72,7 @@
 }
 
 .auth_page form .pass{
-    position: relative;
-    
+    position: relative; 
 }
 
 .auth_page .form-group #emailHelp{
@@ -93,6 +92,7 @@
     font-weight: 500;
     padding-right: 5px;
 }
+
 @keyframes rotate_border{
     0%{
         transform: rotate(0deg);
@@ -118,14 +118,14 @@
     padding-left: 5px;
     font-weight: 500;
 }
-h2{
+
+.auth_page h2{
     font-size: 40px;
     font-weight: 600;
     text-align: center;
 }
 
 .auth_page form button{
-    /* align-items: center; */
     margin: 20px 5px;
     width: 400px;
     background-color: rgb(107, 228, 204);
@@ -148,6 +148,7 @@ h2{
     margin-left: 130px;
     font-size: 20px;
 }
+
 .auth_page .form-group label{
     margin-top: 25px;
     margin-left: 10px;
@@ -158,3 +159,66 @@ h2{
     margin-left: 50px;
 }
 
+@media (max-width: 766px){
+
+    .auth_page h2{
+        font-size: 25px;
+        font-weight: 600;
+        text-align: center;
+    }
+
+    .auth_page_container{
+      position: relative;
+      width: 300px;
+      height: 450px;
+      max-width: 500px;
+      max-height: 600px;
+      padding: 10px;
+    }
+    
+    .auth_page form button{
+      margin: 0px 55px;
+      width: 80px;
+      height: 50px;
+      padding: 5px;
+      background-color: rgb(107, 228, 204);
+      cursor: pointer;
+      font-size: 13px;
+      color: rgb(19, 18, 18);
+    }
+
+    .auth_page .form-group .email{
+        margin-left: 15px;
+        font-size: 10px;
+    }
+    
+    .auth_page .form-group .password{
+        margin-left: 15px;
+        font-size: 10px;
+    }
+    
+    .auth_page .form-group label{
+        margin-top: 25px;
+        margin-left: 10px;
+        font-size: 15px;
+    }
+
+    .auth_page form p{
+        font-size: 10px;
+        margin-left: 10px;
+    }
+
+    .auth_page .form-group #emailHelp{
+        font-size: 10px;
+        /* margin-bottom: 0px; */
+        color: white;
+        margin-left: 10px;
+        text-align: center;
+        display: flex;
+    }
+
+    .auth_page .form-group input{
+        font-size: 15px;
+        color: black;
+    }
+}

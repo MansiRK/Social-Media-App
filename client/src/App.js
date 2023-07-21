@@ -50,12 +50,6 @@ function App() {
       alert("This browser does not support desktop notification");
     }
     else if (Notification.permission === "granted") {}
-    // eslint-disable-next-line no-undef
-    else if (Nbooleanotification.permission !== "denied") {
-      Notification.requestPermission().then(function (permission) {
-        if (permission === "granted") {}
-      });
-    }
   },[])
 
  

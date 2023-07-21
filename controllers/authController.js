@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const UserModel = require('../models/userModel')
@@ -106,7 +105,7 @@ const loginUser = async (req, res) => {
     })
   } catch (err) {
     return res.status(500).json(
-      { message: `Failed to log in. ${err.message}` }
+      { message: `Failed to log in. ${err.message}` },
     )
   }
 }
@@ -128,51 +127,47 @@ const generateAccessToken = async (req, res) => {
   try {
     const rf_token = req.cookies.refreshtoken
     if (!rf_token) {
-      return res.status(400).json({ message: 'Please login now.' },
-      ),
+      return res.status(400).json(
+        { message: 'Please login now.' },
+      )
     }
 
-        jwt.verify(rf_token, process.env.REFRESH_TOKEN_SECRET, async (err, result) => {
-            if (err) {
-                return res.status(400).json({ message: 'Please login now.' })
-            }
+    // eslint-disable-next-line consistent-return
+    jwt.verify(rf_token, process.env.REFRESH_TOKEN_SECRET, async (err, result) => {
+      if (err) {
+        return res.status(400).json({ message: 'Please login now.' })
+      }
 
-            const user = await UserModel.findById(result.id).select('-password')
-                .populate('followers following', 'avatar username firstname lastname followers following')
+      const user = await UserModel.findById(result.id).select('-password')
+        .populate('followers following', 'avatar username firstname lastname followers following')
+      if (!user) {
+        return res.status(400).json({ message: 'This user does not exist.' })
+      }
 
-            if (!user) {
-                return res.status(400).json({ message: 'This user does not exist.' })
-            }
+      // eslint-disable-next-line no-use-before-define
+      const access_token = createAccessToken({ id: result.id })
 
-            // eslint-disable-next-line no-use-before-define
-            const access_token = createAccessToken({ id: result.id })
-
-            res.status(200).json({
-                message: 'Access token generated successfully!',
-                access_token,
-                user
-            })
-        })
-
-    } catch (err) {
-        return res.status(500).json(
-            { message: `Failed to generate access token. ${err.message }`
-        })
-    }
+      res.status(200).json({
+        message: 'Access token generated successfully!',
+        access_token,
+        user,
+      })
+    })
+  } catch (err) {
+    return res.status(500).json(
+      { message: `Failed to generate access token. ${err.message}` },
+    )
+  }
 }
 
-const createAccessToken = (payload) => {
-    return jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1d' })
-}
+const createAccessToken = (payload) => jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1d' })
 
-const createRefreshToken = (payload) => {
-    return jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '30d' })
-}
+const createRefreshToken = (payload) => jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '30d' })
 
 module.exports = {
-    registerUser,
-    loginUser,
-    logoutUser,
+  registerUser,
+  loginUser,
+  logoutUser,
   generateAccessToken,
 
 }

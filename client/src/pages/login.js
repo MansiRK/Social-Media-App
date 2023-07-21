@@ -35,9 +35,7 @@ const Login = () => {
         <div className= "auth_page_container">
         <div className="auth_page">
             <form onSubmit={handleSubmit}>
-                <h2 className="text-uppercase text-center mb-4">2MR Media</h2>
-                
-
+                <h2 className="text-uppercase text-center ">2MR Media</h2>
                 <div className="form-group">
                     <i class="email fa fa-user"></i>
                     <label htmlFor="exampleInputEmail1">Email address</label>
@@ -47,10 +45,8 @@ const Login = () => {
                     <small id="emailHelp" className='text-muted'>
                         We'll never share your email with anyone else.
                     </small>
-               
-
-                
-                <i class="password fa fa-unlock-alt"></i>
+            
+                    <i class="password fa fa-unlock-alt"></i>
                     <label htmlFor="exampleInputPassword1">Password</label>
 
                     <div className="pass">
@@ -66,7 +62,7 @@ const Login = () => {
                    
                 </div>
                 
-                <button type="submit" className="btn "
+                <button type="submit" className="btn"
                 disabled={email && password ? false : true}>
                     Login
                 </button>

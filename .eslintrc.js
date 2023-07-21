@@ -6,6 +6,8 @@ module.exports = {
     mocha: true,
   },
   extends: 'airbnb-base',
+  parser: '@babel/eslint-parser',
+  requireConfigFile: false,
   overrides: [
     {
       env: {
@@ -16,7 +18,6 @@ module.exports = {
       ],
       parserOptions: {
         sourceType: 'script',
-        parser: '@babel/eslint-parser',
       },
     },
   ],
@@ -24,7 +25,7 @@ module.exports = {
     ecmaVersion: 'latest',
   },
   rules: {
-    'no-console': 2,
+    'no-console': 0,
     semi: ['error', 'never'],
     quotes: ['error', 'single'],
     'linebreak-style': ['error', 'unix'],

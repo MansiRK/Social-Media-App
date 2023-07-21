@@ -5,8 +5,6 @@
     justify-content: center;
     align-items: center;
     letter-spacing: 1px;
-   
-   
 }
 .register_page_container{
     position: relative;
@@ -130,7 +128,6 @@ h2{
 }
 
 .register_page button{
-    /* align-items: center; */
     margin: 20px 5px;
     width: 400px;
     background-color: rgb(107, 228, 204);
@@ -146,4 +143,66 @@ h2{
 
 .register_page p{
     margin-left: 70px;
+}
+
+@media (max-width: 766px){
+
+    .register_page h2{
+        margin-top: 0px;
+        font-size: 25px;
+        font-weight: 600;
+        text-align: center;
+    }
+
+    .register_page_container{
+        position: relative;
+        width: 300px;
+        height: 590px;
+        padding: 10px;
+        margin: 15px;
+    }
+
+    .register_page .register-group label{
+        margin-top: 5px;
+        margin-left: 10px;
+        font-size: 15px;
+        margin-bottom: 3px;
+    }
+
+    .register_page .register-group input{
+        font-size: 15px;
+        color: black;
+        height: 24px;
+        width: 220px;
+        padding-left: 15px;
+    }
+
+    .register_page .register-group input::placeholder{
+        font-size: 12px;
+        color: #00000052;
+        letter-spacing: 0.5px;
+        padding-left: 10px;
+        font-weight: 400;
+    }
+
+    .section .register_page .gender{
+        margin-top: 7px;
+        font-size: 15px;
+    }
+
+    .register_page button{
+        margin: 0px 58px;
+        width: 80px;
+        height: 50px;
+        padding: 0px;
+        background-color: rgb(107, 228, 204);
+        cursor: pointer;
+        font-size: 13px;
+        color: rgb(19, 18, 18);
+      }
+
+    .register_page form p{
+        font-size: 10px;
+        margin-left: 10px;
+    }
 }
