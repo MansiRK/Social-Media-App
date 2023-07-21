@@ -1,7 +1,7 @@
 const chai = require('chai')
 const chaiHttp = require('chai-http')
+// eslint-disable-next-line linebreak-style
 const server = require('../server') // Assuming the server.js file is in the parent directory
-
 chai.use(chaiHttp)
 const { expect } = chai
 

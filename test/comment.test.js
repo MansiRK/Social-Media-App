@@ -1,17 +1,14 @@
-const chai = require('chai');
-const chaiHttp = require('chai-http');
-const server = require('../server'); 
+const chai = require('chai')
+const chaiHttp = require('chai-http')
+const server = require('../server')
 
-chai.use(chaiHttp);
-const expect = chai.expect;
+chai.use(chaiHttp)
+const { expect } = chai
 
-
-let commentId;
+let commentId
 
 describe('Comment', () => {
-
-  let accessToken;
-
+  let accessToken
 
   before((done) => {
     chai
@@ -19,97 +16,98 @@ describe('Comment', () => {
       .post('/api/login')
       .send({ email: 'test@example.com', password: 'password' })
       .end((err, res) => {
-        accessToken = res.body.access_token;
-        done();
-      });
-  });
+        accessToken = res.body.access_token
+        done()
+      })
+  })
 
   describe('POST /api/comment', () => {
     it('should create a new comment', (done) => {
       chai
         .request(server)
         .post('/api/comment')
-        .set('Authorization', 'Bearer ' + accessToken)
+        .set('Authorization', `Bearer ${accessToken}`)
         .send({
           postId: '64b538f8c2e48317fc37702e',
           content: 'Hello',
-          postUserId: '64b537f2c2e48317fc377015'
+          postUserId: '64b537f2c2e48317fc377015',
         })
         .end((err, res) => {
-          expect(res).to.have.status(200);
-          expect(res.body).to.be.an('object');
+          expect(res).to.have.status(200)
+          expect(res.body).to.be.an('object')
 
-          commentId = res.body.newComment._id;
+          // eslint-disable-next-line no-underscore-dangle
+          commentId = res.body.newComment._id
 
-          done();
-        });
-    });
-  });
+          done()
+        })
+    })
+  })
 
   describe('PATCH /api/comment/:id', () => {
     it('should update a comment', (done) => {
       chai
         .request(server)
         .patch(`/api/comment/${commentId}`)
-        .set('Authorization', 'Bearer ' + accessToken)
+        .set('Authorization', `Bearer ${accessToken}`)
         .send({
-          content: 'Updated comment'
+          content: 'Updated comment',
         })
         .end((err, res) => {
-          expect(res).to.have.status(200);
-          expect(res.body).to.be.an('object');
-          expect(res.body.msg).to.equal('Update Success!');
+          expect(res).to.have.status(200)
+          expect(res.body).to.be.an('object')
+          expect(res.body.msg).to.equal('Update Success!')
 
-          done();
-        });
-    });
-  });
+          done()
+        })
+    })
+  })
 
   describe('PATCH /api/comment/:id/like', () => {
     it('should like a comment', (done) => {
       chai
         .request(server)
         .patch(`/api/comment/${commentId}/like`)
-        .set('Authorization', 'Bearer ' + accessToken)
+        .set('Authorization', `Bearer ${accessToken}`)
         .end((err, res) => {
-          expect(res).to.have.status(200);
-          expect(res.body).to.be.an('object');
-          expect(res.body.msg).to.equal('Liked Comment!');
+          expect(res).to.have.status(200)
+          expect(res.body).to.be.an('object')
+          expect(res.body.msg).to.equal('Liked Comment!')
 
-          done();
-        });
-    });
-  });
+          done()
+        })
+    })
+  })
 
   describe('PATCH /api/comment/:id/unlike', () => {
     it('should unlike a comment', (done) => {
       chai
         .request(server)
         .patch(`/api/comment/${commentId}/unlike`)
-        .set('Authorization', 'Bearer ' + accessToken)
+        .set('Authorization', `Bearer ${accessToken}`)
         .end((err, res) => {
-          expect(res).to.have.status(200);
-          expect(res.body).to.be.an('object');
-          expect(res.body.msg).to.equal('UnLiked Comment!');
+          expect(res).to.have.status(200)
+          expect(res.body).to.be.an('object')
+          expect(res.body.msg).to.equal('UnLiked Comment!')
 
-          done();
-        });
-    });
-  });
+          done()
+        })
+    })
+  })
 
   describe('DELETE /api/comment/:id', () => {
     it('should delete a comment', (done) => {
       chai
         .request(server)
         .delete(`/api/comment/${commentId}`)
-        .set('Authorization', 'Bearer ' + accessToken)
+        .set('Authorization', `Bearer ${accessToken}`)
         .end((err, res) => {
-          expect(res).to.have.status(200);
-          expect(res.body).to.be.an('object');
-          expect(res.body.msg).to.equal('Deleted Comment!');
+          expect(res).to.have.status(200)
+          expect(res.body).to.be.an('object')
+          expect(res.body.msg).to.equal('Deleted Comment!')
 
-          done();
-        });
-    });
-  });
-});
+          done()
+        })
+    })
+  })
+})

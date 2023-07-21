@@ -9,5 +9,4 @@ router.post('/logout', authController.logoutUser)
 
 router.post('/refresh_token', authController.generateAccessToken)
 
-
 module.exports = router
