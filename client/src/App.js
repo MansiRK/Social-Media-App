@@ -1,5 +1,5 @@
-import { useEffect } from 'react'
-import {BrowserRouter as Router, Route} from 'react-router-dom'
+import { useEffect } from 'react';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import PageRender from './customRouter/PageRender'
 import PrivateRouter from './customRouter/PrivateRouter'
@@ -50,7 +50,8 @@ function App() {
       alert("This browser does not support desktop notification");
     }
     else if (Notification.permission === "granted") {}
-    else if (Notification.permission !== "denied") {
+    // eslint-disable-next-line no-undef
+    else if (Nbooleanotification.permission !== "denied") {
       Notification.requestPermission().then(function (permission) {
         if (permission === "granted") {}
       });
@@ -68,6 +69,7 @@ function App() {
 
 
   return (
+
     <Router>
       <Alert />
       <div className="blur" style={{top: '-18%', right: '0'}}></div>
