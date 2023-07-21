@@ -87,9 +87,13 @@
     left: 50%;
     margin-right: 50px;
     transform: translate(-150%, -50%);
-    color: white;
+    color: rgb(12, 12, 12);
     font-weight: bold;
     font-size: 20px;
+}
+
+.header .menu .notify_length:hover{
+    color: rgb(255, 23, 23);
 }
 
 .header .menu .navbar-nav li span{
