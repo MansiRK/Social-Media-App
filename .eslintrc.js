@@ -14,5 +14,6 @@ module.exports = {
     quotes: ["error", "double"],
     semi: ["error", "never"],
     "eol-last": ["error", "never"],
+    "function-paren-newline": ["error", "never"],
   },
 }
