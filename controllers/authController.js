@@ -1,17 +1,9 @@
 // Import
-// const dotenv = require("dotenv")
-const express = require("express")
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
 const userModel = require("../models/userModel")
-const cookieparser = require("cookie-parser")
 
-const app = express()
-// To access variables in env
-// dotenv.config()
-app.use(cookieparser())
-
-// Register New User
+// Register new user
 const register = async (req, res) => {
   try {
     const {firstname, lastname, username, email, password, gender} = req.body
@@ -90,9 +82,10 @@ const register = async (req, res) => {
     return res.status(500).json({
       message: `Failed to register the user. ${error.message}`,
     })
-}
+   }
 }
 
+// Login user
 const login = async(req, res) => {
     try {
         const {username, password} = req.body
@@ -151,6 +144,7 @@ const login = async(req, res) => {
     }
 }
 
+// Logout user
 const logout = async(req, res) => {
     try{
         // Clearing the refresh token from cookie
@@ -171,16 +165,20 @@ const logout = async(req, res) => {
     }
 }
 
+// Creating access token again after login
 const recreateAccessToken = async(req, res) => {
     try{
+        // Taking refresh token from cookie
         const ref_token = req.cookies.refresh_token
 
+        // Checking refresh token
         if(!ref_token){
             return res.status(400).json({
                 message: "There is no refresh token. Please login now."
             })
         }
 
+        // Verify refresh token
         jwt.verify(ref_token, process.env.REFRESH_TOKEN, 
             async(error, result) => {
                 if(error){
@@ -189,6 +187,7 @@ const recreateAccessToken = async(req, res) => {
                     })
                 }
 
+                // Check user
                 const user = await userModel.findById(result.id)
 
                 if(!user){
@@ -197,10 +196,12 @@ const recreateAccessToken = async(req, res) => {
                     })
                 }
 
+                // Creating access token
                 const access_token = createAccessToken({
                     id: result.id
                 })
 
+                // Response when successful
                 return res.status(200).json({
                     message: "Access token created successfully.",
                     access_token
@@ -208,6 +209,7 @@ const recreateAccessToken = async(req, res) => {
             })
     }
     catch(error){
+        // Response when error
         return res.status(400).json({
             message: `Failed to create access token. ${error.message}`
         })
@@ -215,10 +217,12 @@ const recreateAccessToken = async(req, res) => {
 
 }
 
+// Creating access token
 const createAccessToken = (payload) => jwt.sign(payload, process.env.ACCESS_TOKEN, {
     expiresIn: "1d"
 })
 
+// Creating refresh token
 const createRefreshToken = (payload) => jwt.sign(payload, process.env.REFRESH_TOKEN, {
     expiresIn: "30d"
 })
