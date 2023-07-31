@@ -41,6 +41,11 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: "",
   },
+  story: {
+    type: String,
+    default: "",
+    maxlength: 200,
+  },
   following: [
     {
       type: mongoose.Types.ObjectId,

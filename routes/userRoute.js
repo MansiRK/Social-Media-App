@@ -6,7 +6,9 @@ const router = express.Router()
 // Routes
 router.get("/search/:username", userController.searchUser )
 
-router.get("/:id", userController.getUser)
+router.get("/fetch/:id", userController.getUser)
+
+router.patch("/:id"), userController.updateUser
 
 // Export
 module.exports = router

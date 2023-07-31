@@ -9,7 +9,7 @@ const searchUser = async(req, res) => {
             username: {
                 $regex: req.params.username
             }
-        }).limit(10).select("firstname lastname following follow")
+        }).limit(10).select("firstname lastname following follow ")
 
         // If user found
         if(users.length > 0){
@@ -62,18 +62,39 @@ const getUser = async(req, res) => {
     }
 }
 
+// Update user
 const updateUser = async(req, res) => {
     try{
         const {firstname, lastname, mobile, gender } = req.body
 
+        if(!firstname && !lastname){
+            return res.status(400).json({
+                message: "Please enter your firstname and lastname."
+            })
+        }
+
+        const user = await userModel.findOneAndUpdate({
+            _id: req.user._id
+        },{
+            firstname, lastname, gender, mobile, story
+        })
+
+        return res.status(200).json({
+            message: "User updated successfully.",
+            user
+        })
     }
     catch(error){
-        
+        return res.status(500).json({
+            message: `Failed to update user. ${error.message}`
+        })
+
     }
 }
 
 // Export
 module.exports = {
     searchUser,
-    getUser
+    getUser, 
+    updateUser
 }
