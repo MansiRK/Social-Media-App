@@ -11,16 +11,14 @@ dotenv.config()
 // Creating instance of express app
 const app = express()
 
-app.get("/", (req, res) => {
-  res.send("This is from server")
-})
-
-// Middleware
+// Middlewares
 app.use(express.json())
 app.use(cookieparser())
 
 // Including other routes
 app.use("/api/auth", Route.authRoute)
+app.use("/api/user", Route.userRoute)
+
 
 // Connecting database
 connectToDatabase()
