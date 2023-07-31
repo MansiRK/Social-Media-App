@@ -77,7 +77,9 @@ const updateUser = async(req, res) => {
             _id: req.user._id
         },{
             firstname, lastname, gender, mobile, story
-        })
+        },{
+        new: true
+    })
 
         return res.status(200).json({
             message: "User updated successfully.",
