@@ -72,6 +72,7 @@ const register = async (req, res) => {
     // Save user in database
     await newUser.save()
 
+    // Response when successful
     return res.status(200).json({
         message: "User registered successfully.",
         access_token,
@@ -81,10 +82,123 @@ const register = async (req, res) => {
 
   }
   catch (error) {
+    // Response when error
     return res.status(500).json({
-      message: `Failed to register the user: ${error.message}`,
+      message: `Failed to register the user. ${error.message}`,
     })
 }
+}
+
+const login = async(req, res) => {
+    try {
+        const {username, password} = req.body
+
+        // Finding username
+        const usernameExist = await userModel.findOne({
+            username
+        })
+
+        if (!usernameExist) {
+            res.status(400).json({
+                message: "Username does not exist. Use correct username."
+            })
+        }
+
+        // Comparing password
+        const passwordExist = await bcrypt.compare(password, usernameExist.password)
+
+        if(!passwordExist){
+            res.status(400).json({
+                message: "Password does not match. Please try again."
+            })
+        }
+
+        // Access token
+        const access_token = createAccessToken({
+            id: usernameExist._id
+        })
+
+        // Refresh token
+        const refresh_token = createRefreshToken({
+            id: usernameExist._id
+        })
+
+        // Storing refresh token in cookie
+        res.cookie("refresh-token", refresh_token, {
+            httpOnly: true,
+            path: "/api/auth/refresh-token",
+            maxAge: 30*60*60*24*1000, // 2592000000ms i.e 30 days
+        })
+
+        // Response when successful
+        return res.status(200).json({
+            message: "User logged in successfully.",
+            access_token,
+            usernameExist,
+            password: ""
+        })
+    }
+
+    catch (error) {
+    // Response when error
+        return res.status(500).json({
+            message: `Failed to log in the user. ${error.message}`
+        })
+    }
+}
+
+const logout = async(req, res) => {
+    try{
+        // Clearing the refresh token from cookie
+        res.clearCookie("refresh-token", {
+            path: "/api/auth/refresh_token"
+        })
+
+        // Response when successful
+        return res.status(200).json({
+            message: "User logged out successfully."
+        })
+    }
+    catch(error) {
+    // Response when error
+        return res.status(500).json({
+            message: `Failed to logout the user. ${error.message}`
+        })
+    }
+}
+
+const recreateAccessToken = async(req, res) => {
+    try{
+        const ref_token = req.cookies.refresh-token
+
+        if(!ref_token){
+            return res.status(400).json({
+                message: "There is no refresh token. Please login now."
+            })
+        }
+
+        jwt.verify(ref_token, process.env.REFRESH_TOKEN, 
+            async(error, result) => {
+                if(error){
+                    return res.status(400).json({
+                        message: "Refresh token is invalid. Please login now."
+                    })
+                }
+
+                const user = await userModel.findById(result.id)
+
+                if(!user){
+                    return res.status(400).json({
+                        message: "This user does not exist."
+                    })
+                }
+            })
+    
+    }
+    catch(error){
+
+    }
+
 }
 
 const createAccessToken = (payload) => jwt.sign(payload, process.env.ACCESS_TOKEN, {
@@ -96,5 +210,7 @@ const createRefreshToken = (payload) => jwt.sign(payload, process.env.REFRESH_TO
 })
 
 module.exports = {
-    register
+    register,
+    login, 
+    logout
 } 
