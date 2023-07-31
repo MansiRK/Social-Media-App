@@ -6,5 +6,7 @@ const router = express.Router()
 // Routes
 router.get("/search/:username", userController.searchUser )
 
+router.get("/:id", userController.getUser)
+
 // Export
 module.exports = router
