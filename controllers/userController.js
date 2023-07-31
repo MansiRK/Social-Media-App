@@ -65,7 +65,7 @@ const getUser = async(req, res) => {
 // Update user
 const updateUser = async(req, res) => {
     try{
-        const {firstname, lastname, mobile, gender } = req.body
+        const {firstname, lastname, mobile, story, gender } = req.body
 
         if(!firstname && !lastname){
             return res.status(400).json({
@@ -74,12 +74,12 @@ const updateUser = async(req, res) => {
         }
 
         const user = await userModel.findOneAndUpdate({
-            _id: req.user._id
+            _id: req.params.id
         },{
             firstname, lastname, gender, mobile, story
         },{
-        new: true
-    })
+            new: true
+        })
 
         return res.status(200).json({
             message: "User updated successfully.",
