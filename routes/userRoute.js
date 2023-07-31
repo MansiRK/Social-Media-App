@@ -4,7 +4,7 @@ const express = require("express")
 const router = express.Router()
 
 // Routes
-router.get("/search", userController.searchUser )
+router.get("/search/:username", userController.searchUser )
 
 // Export
 module.exports = router

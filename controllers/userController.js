@@ -7,7 +7,7 @@ const searchUser = async(req, res) => {
         // Finding users
         const users = await userModel.find({
             username: {
-                regex: req.query.username
+                $regex: req.params.username
             }
         }).limit(10)
 
