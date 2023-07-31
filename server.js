@@ -3,6 +3,7 @@ const express = require("express")
 const dotenv = require("dotenv")
 const connectToDatabase = require("./config/database")
 const Route = require("./routes/index")
+const cookieparser = require("cookie-parser")
 
 // To access variables in env
 dotenv.config()
@@ -16,6 +17,7 @@ app.get("/", (req, res) => {
 
 // Middleware
 app.use(express.json())
+app.use(cookieparser())
 
 // Including other routes
 app.use("/api/auth", Route.authRoute)

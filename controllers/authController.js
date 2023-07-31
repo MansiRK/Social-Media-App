@@ -1,11 +1,15 @@
 // Import
-const dotenv = require("dotenv")
+// const dotenv = require("dotenv")
+const express = require("express")
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
 const userModel = require("../models/userModel")
+const cookieparser = require("cookie-parser")
 
+const app = express()
 // To access variables in env
-dotenv.config()
+// dotenv.config()
+app.use(cookieparser())
 
 // Register New User
 const register = async (req, res) => {
@@ -63,9 +67,9 @@ const register = async (req, res) => {
     })
 
     // Storing refresh token in cookie
-    res.cookie("refresh-token", refresh_token, {
+    res.cookie("refresh_token", refresh_token, {
         httpOnly: true,
-        path: "/api/auth/refresh-token",
+        path: "/api/auth/refresh_token",
         maxAge: 30*60*60*24*1000, // 2592000000ms i.e 30 days
     })
 
@@ -124,9 +128,9 @@ const login = async(req, res) => {
         })
 
         // Storing refresh token in cookie
-        res.cookie("refresh-token", refresh_token, {
+        res.cookie("refresh_token", refresh_token, {
             httpOnly: true,
-            path: "/api/auth/refresh-token",
+            path: "/api/auth/refresh_token",
             maxAge: 30*60*60*24*1000, // 2592000000ms i.e 30 days
         })
 
@@ -150,7 +154,7 @@ const login = async(req, res) => {
 const logout = async(req, res) => {
     try{
         // Clearing the refresh token from cookie
-        res.clearCookie("refresh-token", {
+        res.clearCookie("refresh_token", {
             path: "/api/auth/refresh_token"
         })
 
@@ -169,7 +173,7 @@ const logout = async(req, res) => {
 
 const recreateAccessToken = async(req, res) => {
     try{
-        const ref_token = req.cookies.refresh-token
+        const ref_token = req.cookies.refresh_token
 
         if(!ref_token){
             return res.status(400).json({
@@ -192,11 +196,21 @@ const recreateAccessToken = async(req, res) => {
                         message: "This user does not exist."
                     })
                 }
+
+                const access_token = createAccessToken({
+                    id: result.id
+                })
+
+                return res.status(200).json({
+                    message: "Access token created successfully.",
+                    access_token
+                })
             })
-    
     }
     catch(error){
-
+        return res.status(400).json({
+            message: `Failed to create access token. ${error.message}`
+        })
     }
 
 }
@@ -212,5 +226,6 @@ const createRefreshToken = (payload) => jwt.sign(payload, process.env.REFRESH_TO
 module.exports = {
     register,
     login, 
-    logout
+    logout,
+    recreateAccessToken
 } 
