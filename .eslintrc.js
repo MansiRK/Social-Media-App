@@ -5,6 +5,7 @@ module.exports = {
     commonjs: true,
   },
   extends: "airbnb-base",
+  parser: "@babel/eslint-parser",
   parserOptions: {
     ecmaVersion: "latest",
     sourceType: "script",

@@ -1,8 +1,11 @@
+// Import 
 const mongoose = require("mongoose")
 const dotenv = require("dotenv")
 
+// To access variables in env
 dotenv.config()
 
+// Export
 module.exports = () => {
   // eslint-disable-next-line function-paren-newline
   mongoose.connect(

@@ -1,5 +1,7 @@
+// Import 
 const mongoose = require("mongoose")
 
+// Creating schema
 const userSchema = new mongoose.Schema({
   firstname: {
     type: String,
@@ -18,6 +20,7 @@ const userSchema = new mongoose.Schema({
     required: true,
     unique: true,
     maxlength: 10,
+    trim: true,
   },
   email: {
     type: String,
@@ -39,25 +42,28 @@ const userSchema = new mongoose.Schema({
   },
   following: [
     {
-      type: mongoose.typeOf.ObjectId,
+      type: mongoose.Types.ObjectId,
       ref: "user",
     },
   ],
   follow: [
     {
-      type: mongoose.typeOf.ObjectId,
+      type: mongoose.Types.ObjectId,
       ref: "user",
     },
   ],
   save: [
     {
-      type: mongoose.typeOf.ObjectId,
+      type: mongoose.Types.ObjectId,
       ref: "user",
     },
   ],
-
+},{
+    timestamps: true
 })
 
-const userModel = new mongoose.Model("user", userSchema)
+// Creating model
+const userModel = new mongoose.model("user", userSchema)
 
+// Export
 module.exports = userModel
