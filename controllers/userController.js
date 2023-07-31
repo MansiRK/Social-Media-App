@@ -67,12 +67,21 @@ const updateUser = async(req, res) => {
     try{
         const {firstname, lastname, mobile, story, gender } = req.body
 
-        if(!firstname && !lastname){
+        // Check firstname
+        if(!firstname){
             return res.status(400).json({
-                message: "Please enter your firstname and lastname."
+                message: "Please enter your firstname."
             })
         }
 
+        // Check lastname
+        if(!lastname){
+            return res.status(400).json({
+                message: "Please enter your lastname."
+            })
+        }
+
+        // Find user to update
         const user = await userModel.findOneAndUpdate({
             _id: req.params.id
         },{
@@ -81,12 +90,21 @@ const updateUser = async(req, res) => {
             new: true
         })
 
+        // If no user
+        if(!user){
+            return res.status(400).json({
+                message: "No user exist with this ID"
+            })
+        }
+
+        // Response when successful
         return res.status(200).json({
             message: "User updated successfully.",
             user
         })
     }
     catch(error){
+        // Response when error
         return res.status(500).json({
             message: `Failed to update user. ${error.message}`
         })
