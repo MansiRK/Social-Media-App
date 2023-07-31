@@ -1,18 +1,20 @@
 // Import
-const userModel = require("../models/userModel")
 const dotenv = require("dotenv")
+const bcrypt = require("bcrypt")
+const jwt = require("jsonwebtoken")
+const userModel = require("../models/userModel")
 
 // To access variables in env
 dotenv.config()
 
 // Register New User
-const register = async(async (req, res) => {
+const register = async (req, res) => {
   try {
-    const {firstname, lastname, username, password, gender} = req.body
+    const {firstname, lastname, username, email, password, gender} = req.body
     const newUsername = username.toLowerCase().replace(/ /g, "")
 
     // Finding username
-    const user_name = await userModel.find({
+    const user_name = await userModel.findOne({
         username: newUsername
     })
 
@@ -23,7 +25,7 @@ const register = async(async (req, res) => {
     }
 
     // Finding email
-    const user_email = await userModel.find({
+    const user_email = await userModel.findOne({
         email
     })
 
@@ -47,24 +49,34 @@ const register = async(async (req, res) => {
 
     // New user
     const newUser = new userModel({
-        firstname, lastname, username: newUsername, password: hash_password, gender
+        firstname, lastname, username: newUsername, email, password: hash_password, gender
     })
 
     // Access token
-    const access_token = jwt.sign(payload, process.env.ACCESS_TOKEN, {
-        expiresIn: "1d"
-    })
+    const access_token = createAccessToken({
+            id: newUser._id
+        })
 
     // Refresh token
-    const refresh_token = jwt.sing(payload, process.env.REFRESH_TOKEN, {
-        expiresIn: "30d"
+    const refresh_token = createRefreshToken({
+        id: newUser._id
     })
 
     // Storing refresh token in cookie
     res.cookie("refresh-token", refresh_token, {
         httpOnly: true,
-        path: "api/auth/refresh-token",
+        path: "/api/auth/refresh-token",
         maxAge: 30*60*60*24*1000, // 2592000000ms i.e 30 days
+    })
+
+    // Save user in database
+    await newUser.save()
+
+    return res.status(200).json({
+        message: "User registered successfully.",
+        access_token,
+        newUser,
+        password: ""
     })
 
   }
@@ -72,8 +84,15 @@ const register = async(async (req, res) => {
     return res.status(500).json({
       message: `Failed to register the user: ${error.message}`,
     })
-  }
-  
+}
+}
+
+const createAccessToken = (payload) => jwt.sign(payload, process.env.ACCESS_TOKEN, {
+    expiresIn: "1d"
+})
+
+const createRefreshToken = (payload) => jwt.sign(payload, process.env.REFRESH_TOKEN, {
+    expiresIn: "30d"
 })
 
 module.exports = {

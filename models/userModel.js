@@ -31,6 +31,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
     unique: true,
+    minlength: 8,
   },
   gender: {
     type: String,
@@ -52,7 +53,7 @@ const userSchema = new mongoose.Schema({
       ref: "user",
     },
   ],
-  save: [
+  saved: [
     {
       type: mongoose.Types.ObjectId,
       ref: "user",
@@ -63,7 +64,7 @@ const userSchema = new mongoose.Schema({
 })
 
 // Creating model
-const userModel = new mongoose.model("user", userSchema)
+const userModel = mongoose.model("user", userSchema, "user_collection")
 
 // Export
 module.exports = userModel

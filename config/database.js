@@ -5,10 +5,9 @@ const dotenv = require("dotenv")
 // To access variables in env
 dotenv.config()
 
-// Export
-module.exports = () => {
-  // eslint-disable-next-line function-paren-newline
-  mongoose.connect(
+// Connecting database
+const connectToDatabase = async(req, res) => {
+    mongoose.connect(
     process.env.MONGO_DB, {
     //   useCreateIndex: true,
     //   useFindAndModify: false,
@@ -20,5 +19,9 @@ module.exports = () => {
     })
     .catch((error) => {
       console.log("Database connection failed due to error: ", error)
+      process.exit(0)
     })
 }
+
+// Export
+module.exports = connectToDatabase

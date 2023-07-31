@@ -7,15 +7,18 @@ const Route = require("./routes/index")
 // To access variables in env
 dotenv.config()
 
-// Creating instance of express  app
+// Creating instance of express app
 const app = express()
 
 app.get("/", (req, res) => {
   res.send("This is from server")
 })
 
+// Middleware
+app.use(express.json())
+
 // Including other routes
-app.use("api/auth", Route.authRoute)
+app.use("/api/auth", Route.authRoute)
 
 // Connecting database
 connectToDatabase()
