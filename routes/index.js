@@ -7,5 +7,5 @@ const postRoute = require("./postRoute")
 module.exports = {
   authRoute,
   userRoute,
-  postRoute
+  postRoute,
 }

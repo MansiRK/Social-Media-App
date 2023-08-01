@@ -4,17 +4,17 @@ const mongoose = require("mongoose")
 // Creating schema
 const postSchema = new mongoose.Schema({
   images: {
-      type: Array,
+    type: Array,
+    required: true,
+    public_id: {
+      type: String,
       required: true,
-      public_id: {
-        type: String,
-        required: true,
-      },
-      secure_url: {
-        type: String,
-        required: true,
-      },
     },
+    secure_url: {
+      type: String,
+      required: true,
+    },
+  },
   caption: {
     type: String,
     maxLength: 500,
