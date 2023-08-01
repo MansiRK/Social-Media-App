@@ -1,6 +1,6 @@
 // Import 
 const userController = require("../controllers/userController")
-const middleware = require("../middleware")
+const middleware = require("../middleware/middleware")
 const express = require("express")
 const router = express.Router()
 

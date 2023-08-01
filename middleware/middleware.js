@@ -1,5 +1,5 @@
 // Import
-const userModel = require("./models/userModel")
+const userModel = require("../models/userModel")
 const jwt = require("jsonwebtoken")
 
 // Adding middleware
