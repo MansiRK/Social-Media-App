@@ -16,5 +16,7 @@ route.get("/user_post/:id", middleware, postController.getUserPosts)
 
 route.patch("/update/:id", middleware, postController.updatePost)
 
+route.patch("/like/:id", middleware, postController.likePost)
+
 // Export
 module.exports = route
