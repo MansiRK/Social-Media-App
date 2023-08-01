@@ -71,8 +71,10 @@ const createPost = async (req, res) => {
   }
 }
 
+// Get all posts
 const getAllPosts = async (req, res) => {
   try {
+    // Find posts
     const posts = await postModel.find({
       user: [
         req.user.following,
@@ -81,12 +83,21 @@ const getAllPosts = async (req, res) => {
     }).sort("-createdAt")
       .populate("user likes", "avatar firstname lastname username followers followings")
 
+    // If no posts
+    if (posts.length === 0) {
+      return res.status(400).json({
+        message: "There are no posts.",
+      })
+    }
+
+    // Response when successful
     return res.status(200).json({
       message: "All posts fetched successfully.",
       posts,
     })
   }
   catch (error) {
+    // Response when error
     return res.status(500).json({
       message: `Failed to fetch the posts. ${error.message}`,
     })
