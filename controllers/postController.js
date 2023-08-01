@@ -81,7 +81,7 @@ const getAllPosts = async (req, res) => {
         req.user._id,
       ],
     }).sort("-createdAt")
-      .populate("user likes", "avatar firstname lastname username followers followings")
+      .populate("user likes", "avatar email firstname lastname username followers followings")
 
     // If no posts found
     if (posts.length === 0) {
@@ -109,7 +109,7 @@ const getSinglePost = async (req, res) => {
   try {
     // Find post
     const post = await postModel.findById(req.params.id)
-      .populate("user likes", "avatar username firstname lastname followers followings")
+      .populate("user likes", "avatar username email firstname lastname followers followings")
 
     // If no post found
     if (!post) {
@@ -139,7 +139,7 @@ const getUserPosts = async (req, res) => {
     const posts = await postModel.find({
       user: req.params.id,
     }).sort("-createdAt")
-      .populate("user likes", "avatar username firstname lastname followers followings")
+      .populate("user likes", "avatar email username firstname lastname followers followings")
 
     // If no post found
     if (!posts) {
@@ -152,6 +152,29 @@ const getUserPosts = async (req, res) => {
     return res.status(200).json({
       message: "Fetched all the posts from this user successfully.",
       posts,
+    })
+  }
+  catch (error) {
+    // Response when error
+    return res.status(500).json({
+      message: `Failed to fetch posts of this user. ${error.message}`,
+    })
+  }
+}
+
+const updatePost = async (req, res) => {
+  try {
+    const { caption, images } = req.body
+
+    const post = await postModel.findOneAndUpdate({
+      _id: req.params.id,
+    }, {
+      caption, images,
+    }).populate("user likes", "avatar username firstname lastname email")
+
+    // Response when error
+    return res.status(500).json({
+      message: `Failed to fetch posts of this user. ${error.message}`,
     })
   }
   catch (error) {
