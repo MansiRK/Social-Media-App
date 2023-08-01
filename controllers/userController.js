@@ -11,7 +11,7 @@ const searchUser = async (req, res) => {
       username: {
         $regex: req.params.username,
       },
-    }).limit(10).select("firstname lastname followings followers ")
+    }).limit(10).select("avatar firstname lastname followings followers ")
 
     // If user found
     if (users.length > 0) {
@@ -138,7 +138,7 @@ const followUser = async (req, res) => {
       },
     }, {
       new: true,
-    }).populate("followers followings", "username email firstname lastname")
+    }).populate("followers followings", "avatar username email firstname lastname")
       .select("-password")
 
     // Find and update user's followings
@@ -188,7 +188,7 @@ const unfollowUser = async (req, res) => {
       },
     }, {
       new: true,
-    }).populate("followers followings", "username email firstname lastname")
+    }).populate("followers followings", " avatar username email firstname lastname")
       .select("-password")
 
     // Find and update user's followings

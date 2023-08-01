@@ -71,7 +71,30 @@ const createPost = async (req, res) => {
   }
 }
 
+const getAllPosts = async (req, res) => {
+  try {
+    const posts = await postModel.find({
+      user: [
+        req.user.following,
+        req.user._id,
+      ],
+    }).sort("-createdAt")
+      .populate("user likes", "avatar firstname lastname username followers followings")
+
+    return res.status(200).json({
+      message: "All posts fetched successfully.",
+      posts,
+    })
+  }
+  catch (error) {
+    return res.status(500).json({
+      message: `Failed to fetch the posts. ${error.message}`,
+    })
+  }
+}
+
 // Export
 module.exports = {
   createPost,
+  getAllPosts,
 }

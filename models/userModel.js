@@ -33,6 +33,10 @@ const userSchema = new mongoose.Schema({
     unique: true,
     minlength: 8,
   },
+  avatar: {
+    type: String,
+    default: "https://res.cloudinary.com/dkn3awxd6/image/upload/v1690220757/default-img.png",
+  },
   gender: {
     type: String,
     default: "male",
