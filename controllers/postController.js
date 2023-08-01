@@ -195,6 +195,7 @@ const updatePost = async (req, res) => {
   }
 }
 
+// Like post by ID
 const likePost = async (req, res) => {
   try {
     // Find post
@@ -210,6 +211,7 @@ const likePost = async (req, res) => {
       })
     }
 
+    // Find and update post
     const like = await postModel.findOneAndUpdate({
       _id: req.params.id,
     }, {
@@ -220,6 +222,7 @@ const likePost = async (req, res) => {
       new: true,
     }).populate("likes user", "avatar username email firstname lastname followers followings")
 
+    // If post does not exist
     if (!like) {
       return res.status(400).json({
         message: "Post does not exist with this ID.",
@@ -247,12 +250,14 @@ const unlikePost = async (req, res) => {
       _id: req.params.id,
     })
 
+    // If post does not exist
     if (post.length === 0) {
       return res.status(400).json({
         message: "Post does not exist with this ID.",
       })
     }
 
+    // Find and update post
     const unlike = await postModel.findOneAndUpdate({
       _id: req.params.id,
       likes: req.user._id,
@@ -264,6 +269,7 @@ const unlikePost = async (req, res) => {
       new: true,
     }).populate("likes user", "avatar username email firstname lastname followers followings")
 
+    // If post is not liked
     if (!unlike) {
       return res.status(400).json({
         message: "You have not liked this post to unlike it",
