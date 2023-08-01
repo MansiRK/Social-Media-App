@@ -11,5 +11,7 @@ router.get("/fetch/:id", middleware, userController.getUser)
 
 router.patch("/update/:id", middleware, userController.updateUser)
 
+router.patch("/follow/:id", middleware, userController.followUser)
+
 // Export
 module.exports = router

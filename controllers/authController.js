@@ -6,7 +6,7 @@ const userModel = require("../models/userModel")
 // Register new user
 const register = async (req, res) => {
   try {
-    const {firstname, lastname, username, email, password, gender} = req.body
+    const { firstname, lastname, username, email, password, gender} = req.body
     const newUsername = username.toLowerCase().replace(/ /g, "")
 
     // Finding username
