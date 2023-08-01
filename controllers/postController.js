@@ -218,7 +218,7 @@ const likePost = async (req, res) => {
       },
     }, {
       new: true,
-    }).populate("likes", "avatar username email firstname lastname followers followings")
+    }).populate("likes user", "avatar username email firstname lastname followers followings")
 
     if (!like) {
       return res.status(400).json({
@@ -243,22 +243,20 @@ const likePost = async (req, res) => {
 const unlikePost = async (req, res) => {
   try {
     // Find post
-    const post = await postModel.findById({
+    const unlike = await postModel.findOneAndUpdate({
       _id: req.params.id,
-      unlikes: req.user._id,
-    })
-
-    // If post is already liked
-    if (post) {
-      return res.status(400).json({
-        message: "You have already unliked this post.",
-      })
-    }
+    }, {
+      $pull: {
+        likes: req.user._id,
+      },
+    }, {
+      new: true,
+    }).populate("likes user", "avatar username email firstname lastname followers followings")
 
     // Response when successful
     return res.status(200).json({
       message: "You successfully unliked this post.",
-      post,
+      unlike,
     })
   }
   catch (error) {
