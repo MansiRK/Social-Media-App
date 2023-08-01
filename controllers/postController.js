@@ -195,6 +195,8 @@ const updatePost = async (req, res) => {
   }
 }
 
+const likePost
+
 // Export
 module.exports = {
   createPost,
