@@ -5,7 +5,17 @@ module.exports = {
     commonjs: true,
   },
   extends: "airbnb-base",
-  parser: "@babel/eslint-parser",
+  // parser: "@babel/eslint-parser",
+  overrides: [
+    {
+      env: {
+        node: true,
+      },
+      files: [
+        ".eslintrc.{js,cjs}",
+      ],
+    },
+  ],
   parserOptions: {
     ecmaVersion: "latest",
     sourceType: "script",
@@ -16,5 +26,7 @@ module.exports = {
     semi: ["error", "never"],
     "eol-last": ["error", "never"],
     "function-paren-newline": ["error", "never"],
+    "brace-style": ["error", "stroustrup"],
+    "no-unused-vars": "off",
   },
 }

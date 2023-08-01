@@ -1,0 +1,38 @@
+// Import
+const mongoose = require("mongoose")
+
+// Creating schema
+const postSchema = new mongoose.Schema({
+  images: {
+    type: Array,
+    required: true,
+  },
+  caption: {
+    type: String,
+    maxLength: 500,
+  },
+  user: {
+    type: mongoose.Types.ObjectId,
+    ref: "user",
+  },
+  likes: [
+    {
+      type: mongoose.Types.ObjectId,
+      ref: "user",
+    },
+  ],
+  comments: [
+    {
+      type: mongoose.Types.ObjectId,
+      ref: "user",
+    },
+  ],
+}, {
+  timestamps: true,
+})
+
+// Creating model
+const postModel = mongoose.model("post", postSchema, "post_collection")
+
+// Export
+module.exports = postModel

@@ -1,4 +1,4 @@
-// Import 
+// Import
 const mongoose = require("mongoose")
 
 // Creating schema
@@ -64,8 +64,8 @@ const userSchema = new mongoose.Schema({
       ref: "user",
     },
   ],
-},{
-    timestamps: true
+}, {
+  timestamps: true,
 })
 
 // Creating model

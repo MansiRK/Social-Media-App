@@ -1,4 +1,4 @@
-// Import 
+// Import
 const mongoose = require("mongoose")
 const dotenv = require("dotenv")
 
@@ -6,8 +6,9 @@ const dotenv = require("dotenv")
 dotenv.config()
 
 // Connecting database
-const connectToDatabase = async(req, res) => {
-    mongoose.connect(
+const connectToDatabase = async (req, res) => {
+  // eslint-disable-next-line function-paren-newline
+  mongoose.connect(
     process.env.MONGO_DB, {
     //   useCreateIndex: true,
     //   useFindAndModify: false,

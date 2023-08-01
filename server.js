@@ -1,9 +1,9 @@
-// Import 
+// Import
 const express = require("express")
 const dotenv = require("dotenv")
+const cookieparser = require("cookie-parser")
 const connectToDatabase = require("./config/database")
 const Route = require("./routes/index")
-const cookieparser = require("cookie-parser")
 
 // To access variables in env
 dotenv.config()
@@ -18,7 +18,6 @@ app.use(cookieparser())
 // Including other routes
 app.use("/api/auth", Route.authRoute)
 app.use("/api/user", Route.userRoute)
-
 
 // Connecting database
 connectToDatabase()
