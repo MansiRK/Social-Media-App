@@ -115,17 +115,20 @@ const updateUser = async(req, res) => {
 // Follow user
 const followUser = async(req, res) => {
     try{
+        // Find user
         const user = await userModel.find({
             _id: req.params.id,
             followers: req.user._id
         })
 
+        // Check user in followers
         if(user.length > 0){
             return res.status(400).json({
                 message: "You are already following this user."
             })
         }
 
+        // Find and update other user's followers
         const newUser = await userModel.findOneAndUpdate({
             _id: req.params.id
         },{
@@ -137,10 +140,7 @@ const followUser = async(req, res) => {
         }).populate("followers followings", "username email firstname lastname")
         .select("-password")
 
-        console.log(req.params.id)
-
-        console.log(req.user._id)
-
+        // Find and update user's followings
         await userModel.findOneAndUpdate({
             _id: req.user._id
         },{
@@ -149,12 +149,14 @@ const followUser = async(req, res) => {
             }
         })
 
+        // Response when successful
         return res.status(200).json({
             message: "You successfully followed this user.",
             newUser
         })
     }
     catch(error){
+        // Response when error
         return res.status(500).json({
             message: `Failed to follow this user. ${error.message}`
         })
@@ -163,17 +165,20 @@ const followUser = async(req, res) => {
 
 const unfollowUser = async(req, res) => {
     try{
+        // Find user
         const user = await userModel.find({
             _id: req.params.id,
             followings: req.user._id
         })
 
+        // Check user in followings
         if(user.length === 0){
             return res.status(400).json({
                 message: "You are already not following this user."
             })
         }
 
+        // Find and update other user's followers
         const newUser = await userModel.findOneAndUpdate({
             _id: req.params.id
         },{
@@ -185,6 +190,7 @@ const unfollowUser = async(req, res) => {
         }).populate("followers followings", "username email firstname lastname")
         .select("-password")
 
+        // Find and update user's followings
         await userModel.findOneAndUpdate({
             _id: req.user._id
         },{
@@ -195,12 +201,14 @@ const unfollowUser = async(req, res) => {
             new: true
         })
 
+        // Response when successful
         return res.status(200).json({
             message: "You successfully unfollowed this user.",
             newUser
         })
     }
     catch(error){
+        // Response when error
         return res.status(500).json({
             message: `Failed to unfollow this user. ${error.message}`
         })
