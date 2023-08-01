@@ -198,22 +198,38 @@ const updatePost = async (req, res) => {
 const likePost = async (req, res) => {
   try {
     // Find post
-    const post = await postModel.findById({
+    const post = await postModel.find({
       _id: req.params.id,
       likes: req.user._id,
     })
 
     // If post is already liked
-    if (post) {
+    if (post.length > 0) {
       return res.status(400).json({
         message: "You have already liked this post.",
+      })
+    }
+
+    const like = await postModel.findOneAndUpdate({
+      _id: req.params.id,
+    }, {
+      $push: {
+        likes: req.user._id,
+      },
+    }, {
+      new: true,
+    }).populate("likes", "avatar username email firstname lastname followers followings")
+
+    if (!like) {
+      return res.status(400).json({
+        message: "Post does not exist with this ID.",
       })
     }
 
     // Response when successful
     return res.status(200).json({
       message: "You successfully liked this post.",
-      post,
+      like,
     })
   }
   catch (error) {
