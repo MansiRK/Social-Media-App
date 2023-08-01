@@ -132,23 +132,30 @@ const getSinglePost = async (req, res) => {
   }
 }
 
+// Get posts of users
 const getUserPosts = async (req, res) => {
   try {
+    // Find post
     const posts = await postModel.find({
       user: req.params.id,
     }).sort("-createdAt")
+      .populate("user likes", "avatar username firstname lastname followers followings")
 
+    // If no post found
     if (!posts) {
       return res.status(400).json({
         message: "This user has no post.",
       })
     }
 
+    // Response when successful
     return res.status(200).json({
       message: "Fetched all the posts from this user successfully.",
+      posts,
     })
   }
   catch (error) {
+    // Response when error
     return res.status(500).json({
       message: `Failed to fetch posts of this user. ${error.message}`,
     })
