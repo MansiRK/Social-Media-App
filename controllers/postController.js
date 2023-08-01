@@ -224,6 +224,35 @@ const likePost = async (req, res) => {
   }
 }
 
+const unlikePost = async (req, res) => {
+  try {
+    // Find post
+    const post = await postModel.findById({
+      _id: req.params.id,
+      unlikes: req.user._id,
+    })
+
+    // If post is already liked
+    if (post) {
+      return res.status(400).json({
+        message: "You have already unliked this post.",
+      })
+    }
+
+    // Response when successful
+    return res.status(200).json({
+      message: "You successfully unliked this post.",
+      post,
+    })
+  }
+  catch (error) {
+    // Response when error
+    return res.status(500).json({
+      message: `Failed to unlike this post. ${error.message}`,
+    })
+  }
+}
+
 // Export
 module.exports = {
   createPost,
