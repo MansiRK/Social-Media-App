@@ -243,8 +243,19 @@ const likePost = async (req, res) => {
 const unlikePost = async (req, res) => {
   try {
     // Find post
+    const post = await postModel.find({
+      _id: req.params.id,
+    })
+
+    if (post.length === 0) {
+      return res.status(400).json({
+        message: "Post does not exist with this ID.",
+      })
+    }
+
     const unlike = await postModel.findOneAndUpdate({
       _id: req.params.id,
+      likes: req.user._id,
     }, {
       $pull: {
         likes: req.user._id,
@@ -253,6 +264,11 @@ const unlikePost = async (req, res) => {
       new: true,
     }).populate("likes user", "avatar username email firstname lastname followers followings")
 
+    if (!unlike) {
+      return res.status(400).json({
+        message: "You have not liked this post to unlike it",
+      })
+    }
     // Response when successful
     return res.status(200).json({
       message: "You successfully unliked this post.",
