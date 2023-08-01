@@ -172,15 +172,23 @@ const updatePost = async (req, res) => {
       caption, images,
     }).populate("user likes", "avatar username firstname lastname email")
 
+    // If no post found
+    if (!post) {
+      return res.status(400).json({
+        message: "No post found with this ID.",
+      })
+    }
+
     // Response when error
     return res.status(500).json({
-      message: `Failed to fetch posts of this user. ${error.message}`,
+      message: "Updated post successfully.",
+      post,
     })
   }
   catch (error) {
     // Response when error
     return res.status(500).json({
-      message: `Failed to fetch posts of this user. ${error.message}`,
+      message: `Failed to update the post. ${error.message}`,
     })
   }
 }
@@ -191,4 +199,5 @@ module.exports = {
   getAllPosts,
   getSinglePost,
   getUserPosts,
+  updatePost,
 }
