@@ -261,4 +261,5 @@ module.exports = {
   getUserPosts,
   updatePost,
   likePost,
+  unlikePost,
 }
