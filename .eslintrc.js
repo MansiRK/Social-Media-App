@@ -5,7 +5,7 @@ module.exports = {
     commonjs: true,
   },
   extends: "airbnb-base",
-  // parser: "@babel/eslint-parser",
+  parser: "@babel/eslint-parser",
   overrides: [
     {
       env: {
