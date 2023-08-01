@@ -27,7 +27,7 @@ const middleware = async(req, res, next) => {
 
         // Finding user
         const user = await userModel.findOne({
-            _id: decode_token._id
+            _id: decode_token.id
         })
 
         req.user = user

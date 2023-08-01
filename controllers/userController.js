@@ -38,8 +38,8 @@ const searchUser = async(req, res) => {
 // Get user by ID
 const getUser = async(req, res) => {
     try{
-        // Find user by id
-        const user = await userModel.findById(req.params.id)
+        // Find user by id,
+        const user = await userModel.findById(req.params.id).select("-password")
 
         // If no user 
         if(!user){
@@ -88,7 +88,7 @@ const updateUser = async(req, res) => {
             firstname, lastname, gender, mobile, story
         },{
             new: true
-        })
+        }).select("-password")
 
         // If no user
         if(!user){
@@ -134,7 +134,12 @@ const followUser = async(req, res) => {
             }
         },{
             new: true
-        }).populate("followers followings", "username firstname lastname story")
+        }).populate("followers followings", "username email firstname lastname")
+        .select("-password")
+
+        console.log(req.params.id)
+
+        console.log(req.user._id)
 
         await userModel.findOneAndUpdate({
             _id: req.user._id
@@ -142,8 +147,6 @@ const followUser = async(req, res) => {
             $push: {
                 followings: req.params.id
             }
-        },{
-            new: true
         })
 
         return res.status(200).json({
@@ -158,10 +161,58 @@ const followUser = async(req, res) => {
     }
 }
 
+const unfollowUser = async(req, res) => {
+    try{
+        const user = await userModel.find({
+            _id: req.params.id,
+            followings: req.user._id
+        })
+
+        if(user.length === 0){
+            return res.status(400).json({
+                message: "You are already not following this user."
+            })
+        }
+
+        const newUser = await userModel.findOneAndUpdate({
+            _id: req.params.id
+        },{
+            $pull: {
+                followers: req.user._id
+            }
+        },{
+            new: true
+        }).populate("followers followings", "username email firstname lastname")
+        .select("-password")
+
+        await userModel.findOneAndUpdate({
+            _id: req.user._id
+        },{
+            $pull : {
+                followings: req.params.id
+            }
+        },{
+            new: true
+        })
+
+        return res.status(200).json({
+            message: "You successfully unfollowed this user.",
+            newUser
+        })
+    }
+    catch(error){
+        return res.status(500).json({
+            message: `Failed to unfollow this user. ${error.message}`
+        })
+    }
+}
+
+
 // Export
 module.exports = {
     searchUser,
     getUser, 
     updateUser,
-    followUser
+    followUser,
+    unfollowUser
 }

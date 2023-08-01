@@ -13,5 +13,7 @@ router.patch("/update/:id", middleware, userController.updateUser)
 
 router.patch("/follow/:id", middleware, userController.followUser)
 
+router.patch("/unfollow/:id", middleware, userController.unfollowUser)
+
 // Export
 module.exports = router
