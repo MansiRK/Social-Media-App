@@ -10,5 +10,7 @@ route.post("/", middleware, postController.createPost)
 
 route.get("/", middleware, postController.getAllPosts)
 
+route.get("/:id", middleware, postController.getSinglePost)
+
 // Export
 module.exports = route

@@ -104,8 +104,32 @@ const getAllPosts = async (req, res) => {
   }
 }
 
+const getSinglePost = async (req, res) => {
+  try {
+    const post = await postModel.findById(req.params.id)
+      .populate("user likes", "avatar username firstname lastname followers followings")
+
+    if (!post) {
+      return res.status(400).json({
+        message: "No post found with this ID.",
+      })
+    }
+
+    return res.status(200).json({
+      message: "Fetched the post successfully.",
+      post,
+    })
+  }
+  catch (error) {
+    return res.status(500).json({
+      message: `Failed to fetch the post. ${error.message}`,
+    })
+  }
+}
+
 // Export
 module.exports = {
   createPost,
   getAllPosts,
+  getSinglePost,
 }
