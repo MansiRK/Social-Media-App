@@ -104,7 +104,7 @@ const getAllPosts = async (req, res) => {
   }
 }
 
-// Get single post
+// Get single post by ID
 const getSinglePost = async (req, res) => {
   try {
     // Find post
@@ -132,7 +132,7 @@ const getSinglePost = async (req, res) => {
   }
 }
 
-// Get posts of users
+// Get posts of users by ID
 const getUserPosts = async (req, res) => {
   try {
     // Find post
@@ -162,10 +162,12 @@ const getUserPosts = async (req, res) => {
   }
 }
 
+// Update post by ID
 const updatePost = async (req, res) => {
   try {
     const { caption, images } = req.body
 
+    // Find post
     const post = await postModel.findOneAndUpdate({
       _id: req.params.id,
     }, {
@@ -179,7 +181,7 @@ const updatePost = async (req, res) => {
       })
     }
 
-    // Response when error
+    // Response when successful
     return res.status(500).json({
       message: "Updated post successfully.",
       post,
