@@ -346,6 +346,50 @@ const savePost = async (req, res) => {
   }
 }
 
+const unsavePost = async (req, res) => {
+  try {
+    const post = await postModel.find({
+      _id: req.params.id,
+    })
+
+    if (post.length === 0) {
+      return res.status(400).json({
+        message: "Post does not exist with this ID.",
+      })
+    }
+
+    const user = await userModel.findOne({
+      _id: req.user._id,
+      saved: req.params.id,
+    })
+
+    if (!user) {
+      return res.status(400).json({
+        message: "You have not saved this post to unsave it.",
+      })
+    }
+
+    const unsave = await userModel.findOneAndUpdate({
+      _id: req.user._id,
+    }, {
+      $pull: {
+        saved: req.params.id,
+      },
+    }, {
+      new: true,
+    })
+
+    return res.status(200).json({
+      message: "You successfully unsaved this post.",
+    })
+  }
+  catch (error) {
+    return res.status(500).json({
+      message: `Failed to unsave this post. ${error.message}`,
+    })
+  }
+}
+
 // Export
 module.exports = {
   createPost,
