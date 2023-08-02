@@ -4,6 +4,7 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 const cloudinary = require("cloudinary").v2
 const postModel = require("../models/postModel")
+const userModel = require("../models/userModel")
 
 // Configure cloudinary
 cloudinary.config({
@@ -172,6 +173,8 @@ const updatePost = async (req, res) => {
       _id: req.params.id,
     }, {
       caption, images,
+    }, {
+      new: true,
     }).populate("user likes", "avatar username firstname lastname email")
 
     // If no post found
@@ -295,31 +298,41 @@ const savePost = async (req, res) => {
       _id: req.params.id,
     })
 
-    if (!post) {
+    if (post.length === 0) {
       return res.status(400).json({
-        message: "No post exist with this ID."
+        message: "Post does not exist with this ID.",
       })
     }
 
-    const save = await postModel.findOneAndUpdate({
-      _id: req.params.id,
-      saved: req.user._id,
+    const user = await userModel.findOne({
+      _id: req.user._id,
+      saved: req.params.id,
+    })
+
+    if (user) {
+      return res.status(409).json({
+        message: "You have already saved this post.",
+      })
+    }
+
+    const save = await userModel.findOneAndUpdate({
+      _id: req.user._id,
     }, {
       $push: {
         saved: req.params.id,
       },
     }, {
       new: true,
-    }).populate("likes users", "avatar username email firstname lastname followers followings")
+    })
 
-    if (save.length > 0) {
+    if (!save) {
       return res.status(400).json({
-        message: "You have already liked this post.",
+        message: "You have already saved this post.",
       })
     }
 
     return res.status(200).json({
-      message: "You successfully liked this post.",
+      message: "You successfully saved this post.",
       save,
     })
   }
@@ -339,4 +352,5 @@ module.exports = {
   updatePost,
   likePost,
   unlikePost,
+  savePost,
 }

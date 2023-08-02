@@ -20,5 +20,7 @@ route.patch("/like/:id", middleware, postController.likePost)
 
 route.patch("/unlike/:id", middleware, postController.unlikePost)
 
+route.patch("/save/:id", middleware, postController.savePost)
+
 // Export
 module.exports = route
