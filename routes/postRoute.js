@@ -24,5 +24,7 @@ route.patch("/save/:id", middleware, postController.savePost)
 
 route.patch("/unsave/:id", middleware, postController.unsavePost)
 
+route.get("/saved_posts", middleware, postController.getSavedPosts)
+
 // Export
 module.exports = route

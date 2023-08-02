@@ -402,25 +402,17 @@ const unsavePost = async (req, res) => {
 
 const getSavedPosts = async (req, res) => {
   try {
-    const user = await userModel.findById({
-      _id: req.params.id,
-    })
-
-    if (user.length === 0) {
-      return res.status(400).json({
-        message: "No user exists with this ID.",
-      })
-    }
-    const savePosts = await userModel.find({
+    const savePosts = await postModel.find({
       _id: {
         $in: req.user.saved,
       },
     }).sort("-createdAt")
+    // .populate("saved", "avatar username email firstname lastname")
 
     return res.status(200).json({
       message: "You fetched all the saved post of this user successfully.",
-      user,
       savePosts,
+      result: savePosts.length,
     })
   }
   catch (error) {
@@ -441,4 +433,5 @@ module.exports = {
   unlikePost,
   savePost,
   unsavePost,
+  getSavedPosts,
 }
