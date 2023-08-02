@@ -289,6 +289,47 @@ const unlikePost = async (req, res) => {
   }
 }
 
+const savePost = async (req, res) => {
+  try {
+    const post = await postModel.find({
+      _id: req.params.id,
+    })
+
+    if (!post) {
+      return res.status(400).json({
+        message: "No post exist with this ID."
+      })
+    }
+
+    const save = await postModel.findOneAndUpdate({
+      _id: req.params.id,
+      saved: req.user._id,
+    }, {
+      $push: {
+        saved: req.params.id,
+      },
+    }, {
+      new: true,
+    }).populate("likes users", "avatar username email firstname lastname followers followings")
+
+    if (save.length > 0) {
+      return res.status(400).json({
+        message: "You have already liked this post.",
+      })
+    }
+
+    return res.status(200).json({
+      message: "You successfully liked this post.",
+      save,
+    })
+  }
+  catch (error) {
+    return res.status(500).json({
+      message: `Failed to save this post. ${error.message}`,
+    })
+  }
+}
+
 // Export
 module.exports = {
   createPost,
