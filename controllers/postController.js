@@ -381,6 +381,8 @@ const unsavePost = async (req, res) => {
 
     return res.status(200).json({
       message: "You successfully unsaved this post.",
+      post,
+      unsave,
     })
   }
   catch (error) {
@@ -400,4 +402,5 @@ module.exports = {
   likePost,
   unlikePost,
   savePost,
+  unsavePost,
 }
