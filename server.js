@@ -19,6 +19,7 @@ app.use(cookieparser())
 app.use("/api/auth", Route.authRoute)
 app.use("/api/user", Route.userRoute)
 app.use("/api/post", Route.postRoute)
+app.use("/api/comment", Route.commentRoute)
 
 // Connecting database
 connectToDatabase()
