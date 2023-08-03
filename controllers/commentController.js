@@ -81,4 +81,5 @@ const updateComment = async (req, res) => {
 // Export
 module.exports = {
   createComment,
+  updateComment,
 }

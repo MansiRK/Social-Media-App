@@ -8,5 +8,7 @@ const middleware = require("../middleware/middleware")
 // Route
 route.post("/", middleware, commentController.createComment)
 
+route.patch("/:id", middleware, commentController.updateComment)
+
 // Export
 module.exports = route
