@@ -22,7 +22,7 @@ const createComment = async (req, res) => {
 
       if (!comment) {
         return res.status(400).json({
-          message: "This comment does not exist.",
+          message: "There is no comment to reply.",
         })
       }
     }
