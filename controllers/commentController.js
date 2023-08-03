@@ -136,29 +136,35 @@ const likeComment = async (req, res) => {
   }
 }
 
+// Unlike comment by ID
 const unlikeComment = async (req, res) => {
   try {
+    // Find comment
     const commentExist = await commentModel.findById({
       _id: req.params.id,
     })
 
+    // Check if exists
     if (!commentExist) {
       return res.status(400).json({
         message: "No comment exists with this ID",
       })
     }
 
-    const comment = await commentModel.findById({
+    // Find comment in likes
+    const comment = await commentModel.find({
       _id: req.params.id,
       likes: req.user._id,
     })
 
+    // Check is not liked
     if (comment.length === 0) {
       return res.status(400).json({
         message: "You have not liked this comment to unlike it.",
       })
     }
 
+    // Find and update comment
     const unlikedComment = await commentModel.findOneAndUpdate({
       _id: req.params.id,
     }, {
@@ -169,12 +175,14 @@ const unlikeComment = async (req, res) => {
       new: true,
     }).populate("likes user", "avatar username email firstname lastname followers followings")
 
+    // Response when successful
     return res.status(200).json({
       message: "You have successfully unliked this comment.",
       unlikedComment,
     })
   }
   catch (error) {
+    // Response when error
     return res.status(500).json({
       message: `Failed to unlike this comment. ${error.message}`,
     })
