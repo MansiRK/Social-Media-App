@@ -54,10 +54,12 @@ const createComment = async (req, res) => {
   }
 }
 
+// Update comment by ID
 const updateComment = async (req, res) => {
   try {
     const { content } = req.body
 
+    // Find and update comment
     const newComment = await commentModel.findOneAndUpdate({
       _id: req.params.id,
       user: req.user._id,
@@ -67,11 +69,14 @@ const updateComment = async (req, res) => {
       new: true,
     })
 
+    // Response when successful
     return res.status(200).json({
       message: "You have successfully updated this comment.",
+      newComment,
     })
   }
   catch (error) {
+    // Response when error
     return res.status(500).json({
       message: `Failed to update the comment. ${error.message}`,
     })
