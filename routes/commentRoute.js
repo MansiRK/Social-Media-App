@@ -10,5 +10,7 @@ route.post("/", middleware, commentController.createComment)
 
 route.patch("/:id", middleware, commentController.updateComment)
 
+route.patch("/like/:id", middleware, commentController.likeComment)
+
 // Export
 module.exports = route

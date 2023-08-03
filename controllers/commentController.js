@@ -85,10 +85,9 @@ const updateComment = async (req, res) => {
 
 const likeComment = async (req, res) => {
   try {
-
     const commentExist = await commentModel.findById({
       _id: req.params.id,
-    }) 
+    })
 
     if (!commentExist) {
       return res.status(400).json({
@@ -124,7 +123,7 @@ const likeComment = async (req, res) => {
   }
   catch (error) {
     return res.status(500).json({
-      message: `Failed to like this post. ${error.message}`
+      message: `Failed to like this post. ${error.message}`,
     })
   }
 }
@@ -133,4 +132,5 @@ const likeComment = async (req, res) => {
 module.exports = {
   createComment,
   updateComment,
+  likeComment,
 }
