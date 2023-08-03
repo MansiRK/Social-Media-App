@@ -13,7 +13,7 @@ route.get("/", middleware, postController.getAllPosts)
 route.get("/:id", middleware, postController.getSinglePost)
 route.get("/user_post/:id", middleware, postController.getUserPosts)
 
-route.patch("/update/:id", middleware, postController.updatePost)
+route.patch("/:id", middleware, postController.updatePost)
 
 route.patch("/like/:id", middleware, postController.likePost)
 

@@ -14,5 +14,7 @@ route.patch("/like/:id", middleware, commentController.likeComment)
 
 route.patch("/unlike/:id", middleware, commentController.unlikeComment)
 
+route.delete("/:id", middleware, commentController.deleteComment)
+
 // Export
 module.exports = route

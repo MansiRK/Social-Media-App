@@ -8,9 +8,9 @@ const router = express.Router()
 // Routes
 router.get("/search/:username", middleware, userController.searchUser)
 
-router.get("/fetch/:id", middleware, userController.getUser)
+router.get("/:id", middleware, userController.getUser)
 
-router.patch("/update/:id", middleware, userController.updateUser)
+router.patch("/:id", middleware, userController.updateUser)
 
 router.patch("/follow/:id", middleware, userController.followUser)
 

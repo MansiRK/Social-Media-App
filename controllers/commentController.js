@@ -206,6 +206,7 @@ const deleteComment = async (req, res) => {
       $or: [
         {
           user: req.user._id,
+        }, {
           postUserId: req.user._id,
         },
       ],
@@ -237,4 +238,5 @@ module.exports = {
   updateComment,
   likeComment,
   unlikeComment,
+  deleteComment,
 }
