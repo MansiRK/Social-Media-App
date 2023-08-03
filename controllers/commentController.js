@@ -60,7 +60,7 @@ const updateComment = async (req, res) => {
     const { content } = req.body
 
     // Find and update comment
-    const newComment = await commentModel.findOneAndUpdate({
+    const updatedComment = await commentModel.findOneAndUpdate({
       _id: req.params.id,
       user: req.user._id,
     }, {
@@ -72,13 +72,59 @@ const updateComment = async (req, res) => {
     // Response when successful
     return res.status(200).json({
       message: "You have successfully updated this comment.",
-      newComment,
+      updatedComment,
     })
   }
   catch (error) {
     // Response when error
     return res.status(500).json({
       message: `Failed to update the comment. ${error.message}`,
+    })
+  }
+}
+
+const likeComment = async (req, res) => {
+  try {
+
+    const commentExist = await commentModel.findById({
+      _id: req.params.id,
+    }) 
+
+    if (!commentExist) {
+      return res.status(400).json({
+        message: "No comment exists with this ID.",
+      })
+    }
+
+    const comment = await commentModel.find({
+      _id: req.params.id,
+      likes: req.user._id,
+    })
+
+    if (comment.length > 0) {
+      return res.status(400).json({
+        message: "You have already liked this comment.",
+      })
+    }
+
+    const likedComment = await commentModel.findOneAndUpdate({
+      _id: req.params.id,
+    }, {
+      $pull: {
+        likes: req.user._id,
+      },
+    }, {
+      new: true,
+    })
+
+    return res.status(200).json({
+      message: "You successfully liked this comment.",
+      likedComment,
+    })
+  }
+  catch (error) {
+    return res.status(500).json({
+      message: `Failed to like this post. ${error.message}`
     })
   }
 }
