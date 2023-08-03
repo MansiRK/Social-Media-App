@@ -189,6 +189,15 @@ const unlikeComment = async (req, res) => {
   }
 }
 
+const deleteComment = async (req, res) => {
+  try {
+
+  }
+  catch (error) {
+
+  }
+}
+
 // Export
 module.exports = {
   createComment,
