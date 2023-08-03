@@ -5,6 +5,7 @@
 const cloudinary = require("cloudinary").v2
 const postModel = require("../models/postModel")
 const userModel = require("../models/userModel")
+const commentModel = require("../models/commentModel")
 
 // Configure cloudinary
 cloudinary.config({
@@ -422,41 +423,50 @@ const getSavedPosts = async (req, res) => {
   }
 }
 
+// Delete post by ID
 const deletePost = async (req, res) => {
   try {
-    const postExist = await postModel.findById({
+    // Find post
+    const postExist = await postModel.find({
       _id: req.params.id,
     })
 
+    // Check if exists
     if (!postExist) {
       return res.status(400).json({
         message: "No post exists with this ID.",
       })
     }
 
-    const post = await postModel.findOneAndDelete({
+    // Find and delete post
+    const deletedPost = await postModel.findOneAndDelete({
       _id: req.params.id,
       user: req.user._id,
     })
 
-    if (!post) {
+    // Check if owner is deleting
+    if (!deletedPost) {
       return res.status(400).json({
         message: "You cannot delete this post. You are not the owner of this post.",
       })
     }
 
-    const deletedPost = await postModel.findOneAndDelete({
+    // Delete post comments
+    const deletedPostComment = await commentModel.deleteMany({
       _id: {
-        $in: post.comments,
+        $in: deletedPost.comments,
       },
     })
 
+    // Response when successful
     return res.status(200).json({
       message: "You successfully deleted this post.",
-      deletePost,
+      deletedPost,
+      deletedPostComment,
     })
   }
   catch (error) {
+    // Response when error
     return res.status(500).json({
       message: `Failed to delete this post. ${error.message}`,
     })
@@ -475,4 +485,5 @@ module.exports = {
   savePost,
   unsavePost,
   getSavedPosts,
+  deletePost,
 }
