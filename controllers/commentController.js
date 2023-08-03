@@ -191,10 +191,43 @@ const unlikeComment = async (req, res) => {
 
 const deleteComment = async (req, res) => {
   try {
+    const commentExist = await commentModel.findById({
+      _id: req.params.id,
+    })
 
+    if (!commentExist) {
+      return res.status(400).json({
+        message: "No comment exist with this ID.",
+      })
+    }
+
+    const comment = await commentModel.findOneAndDelete({
+      _id: req.params.id,
+      $or: [
+        {
+          user: req.user._id,
+          postUserId: req.user._id,
+        },
+      ],
+    })
+
+    const deletedComment = await postModel.findOneAndDelete({
+      _id: comment.postId,
+    }, {
+      $pull: {
+        comments: req.params.id,
+      },
+    })
+
+    return res.status(200).json({
+      message: "You successfully deleted this comment.",
+      deletedComment,
+    })
   }
   catch (error) {
-
+    return res.status(500).json({
+      message: `Failed to delete this comment. ${error.message}`,
+    })
   }
 }
 
