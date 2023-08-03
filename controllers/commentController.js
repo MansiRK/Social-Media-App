@@ -136,6 +136,51 @@ const likeComment = async (req, res) => {
   }
 }
 
+const unlikeComment = async (req, res) => {
+  try {
+    const commentExist = await commentModel.findById({
+      _id: req.params.id,
+    })
+
+    if (!commentExist) {
+      return res.status(400).json({
+        message: "No comment exists with this ID",
+      })
+    }
+
+    const comment = await commentModel.findById({
+      _id: req.params.id,
+      likes: req.user._id,
+    })
+
+    if (comment.length === 0) {
+      return res.status(400).json({
+        message: "You have not liked this comment to unlike it.",
+      })
+    }
+
+    const unlikedComment = await commentModel.findOneAndUpdate({
+      _id: req.params.id,
+    }, {
+      $pull: {
+        likes: req.user._id,
+      },
+    }, {
+      new: true,
+    }).populate("likes user", "avatar username email firstname lastname followers followings")
+
+    return res.status(200).json({
+      message: "You have successfully unliked this comment.",
+      unlikedComment,
+    })
+  }
+  catch (error) {
+    return res.status(500).json({
+      message: `Failed to unlike this comment. ${error.message}`,
+    })
+  }
+}
+
 // Export
 module.exports = {
   createComment,
