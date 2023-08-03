@@ -216,6 +216,12 @@ const deleteComment = async (req, res) => {
       ],
     })
 
+    if (!comment) {
+      return res.status(400).json({
+        message: "You cannot delete this comment. You are not creater of comment or owner of post.",
+      })
+    }
+
     // Find and delete comment
     const deletedComment = await postModel.findOneAndDelete({
       _id: comment.postId,

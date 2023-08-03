@@ -436,11 +436,30 @@ const deletePost = async (req, res) => {
 
     const post = await postModel.findOneAndDelete({
       _id: req.params.id,
-  
+      user: req.user._id,
+    })
+
+    if (!post) {
+      return res.status(400).json({
+        message: "You cannot delete this post. You are not the owner of this post.",
+      })
+    }
+
+    const deletedPost = await postModel.findOneAndDelete({
+      _id: {
+        $in: post.comments,
+      },
+    })
+
+    return res.status(200).json({
+      message: "You successfully deleted this post.",
+      deletePost,
     })
   }
   catch (error) {
-
+    return res.status(500).json({
+      message: `Failed to delete this post. ${error.message}`,
+    })
   }
 }
 
