@@ -186,4 +186,5 @@ module.exports = {
   createComment,
   updateComment,
   likeComment,
+  unlikeComment,
 }
