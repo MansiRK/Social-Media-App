@@ -422,6 +422,28 @@ const getSavedPosts = async (req, res) => {
   }
 }
 
+const deletePost = async (req, res) => {
+  try {
+    const postExist = await postModel.findById({
+      _id: req.params.id,
+    })
+
+    if (!postExist) {
+      return res.status(400).json({
+        message: "No post exists with this ID.",
+      })
+    }
+
+    const post = await postModel.findOneAndDelete({
+      _id: req.params.id,
+  
+    })
+  }
+  catch (error) {
+
+  }
+}
+
 // Export
 module.exports = {
   createPost,
