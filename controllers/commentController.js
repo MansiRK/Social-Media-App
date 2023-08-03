@@ -83,45 +83,53 @@ const updateComment = async (req, res) => {
   }
 }
 
+// Like comment by ID
 const likeComment = async (req, res) => {
   try {
+    // Find comment
     const commentExist = await commentModel.findById({
       _id: req.params.id,
     })
 
+    // Check if exist
     if (!commentExist) {
       return res.status(400).json({
         message: "No comment exists with this ID.",
       })
     }
 
+    // Find comment in likes
     const comment = await commentModel.find({
       _id: req.params.id,
       likes: req.user._id,
     })
 
+    // Check if already liked
     if (comment.length > 0) {
       return res.status(400).json({
         message: "You have already liked this comment.",
       })
     }
 
+    // Find and update comment
     const likedComment = await commentModel.findOneAndUpdate({
       _id: req.params.id,
     }, {
-      $pull: {
+      $push: {
         likes: req.user._id,
       },
     }, {
       new: true,
-    })
+    }).populate("likes user", "avatar username email firstname lastname followers followings")
 
+    // Response when successful
     return res.status(200).json({
       message: "You successfully liked this comment.",
       likedComment,
     })
   }
   catch (error) {
+    // Response when error
     return res.status(500).json({
       message: `Failed to like this post. ${error.message}`,
     })
