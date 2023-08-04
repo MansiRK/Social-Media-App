@@ -110,7 +110,9 @@ const getAllPosts = async (req, res) => {
 const getSinglePost = async (req, res) => {
   try {
     // Find post
-    const post = await postModel.findById(req.params.id)
+    const post = await postModel.findById({
+      _id: req.params.id,
+    })
       .populate("user likes", "avatar username email firstname lastname followers followings")
 
     // If no post found
@@ -403,7 +405,7 @@ const unsavePost = async (req, res) => {
 
 const getSavedPosts = async (req, res) => {
   try {
-    const savePosts = await postModel.find({
+    const savedPosts = await postModel.find({
       _id: {
         $in: req.user.saved,
       },
@@ -412,8 +414,8 @@ const getSavedPosts = async (req, res) => {
 
     return res.status(200).json({
       message: "You fetched all the saved post of this user successfully.",
-      savePosts,
-      result: savePosts.length,
+      savedPosts,
+      result: savedPosts.length,
     })
   }
   catch (error) {
