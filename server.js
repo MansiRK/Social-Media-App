@@ -32,3 +32,5 @@ app.listen(process.env.PORT, (error) => {
 
   console.log(`Server successfully started at PORT: ${process.env.PORT}`)
 })
+
+module.exports = app
