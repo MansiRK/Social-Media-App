@@ -1,51 +1,42 @@
+/* eslint-disable no-unused-expressions */
 /* eslint-disable import/no-extraneous-dependencies */
 // register-test.js
 const chai = require("chai")
 
 const { expect } = chai
-const supertest = require("supertest")
+const chaiHttp = require("chai-http")
 const app = require("../server")
-// Replace this with the path to your Express app file
-const request = supertest(app)
 
-describe("User Registration End-to-End Test", () => {
-  let page
+chai.use(chaiHttp)
+describe("Authentication of user", () => {
+  describe("Post/api/auth", () => {
+    it("should register a new user", (done) => {
+      const user = {
+        firstname: "John",
+        lastname: "Doe",
+        username: "johndoe",
+        email: "john@example.com",
+        password: "securepassword",
+        gender: "male",
+      }
 
-
-  // Test case: User Registration
-  it("should allow a user to register", async () => {
-    // Replace these with the test data you want to use for registration
-    const userData = {
-      firstname: "John",
-      lastname: "Doe",
-      username: "johndoe",
-      email: "johndoe@example.com",
-      password: "securepassword",
-      gender: "male",
-    }
-
-    // Simulate user registration using Puppeteer
-    await page.goto("http://localhost:5000/auth/register") // Replace with your registration page URL
-    await page.type("#firstname", userData.firstname)
-    await page.type("#lastname", userData.lastname)
-    await page.type("#username", userData.username)
-    await page.type("#email", userData.email)
-    await page.type("#password", userData.password)
-    await page.select("#gender", userData.gender)
-    await page.click("#register-button")
-    await page.waitForNavigation()
-
-    // Make a request to check if the user was registered successfully
-    const response = await request.post("/api/auth/register").send(userData)
-
-    // Assertions
-    expect(response.status).to.equal(200)
-    expect(response.body.message).to.equal("User registered successfully.")
-    expect(response.body.newUser.firstname).to.equal(userData.firstname)
-    expect(response.body.newUser.lastname).to.equal(userData.lastname)
-    expect(response.body.newUser.username).to.equal(userData.username)
-    expect(response.body.newUser.email).to.equal(userData.email)
+      chai.request(app)
+        .post("/register")
+        .send(user)
+        .end((error, res) => {
+          expect(res.body.user).should.have.property("firstname")
+          expect(res.body.user).should.have.property("lastname")
+          expect(res.body.user).should.have.property("username")
+          expect(res.body.user).should.have.property("email")
+          expect(res.body.user).should.have.property("password")
+          expect(res.body.user).should.have.property("gender")
+          expect(res).to.have.status(200)
+          expect(res.body).to.be.an("object")
+          expect(res.body.message).to.equal("User registered successfully.")
+          expect(res.body.access_token).to.be.a("string")
+          expect(res.body.user).to.be.an("object")
+          done()
+        })
+    })
   })
-
-  // Add more test cases for different scenarios as needed
 })
