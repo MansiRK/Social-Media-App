@@ -17,6 +17,7 @@ const http = require("http").createServer(app)
 
 // Attach http server to socket.io
 const io = require("socket.io")(http, {
+  // Time to wait while being inactive i.e 60000ms
   pingTimeout: 60000,
   cors: {
     origin: "http://localhost:3000",
