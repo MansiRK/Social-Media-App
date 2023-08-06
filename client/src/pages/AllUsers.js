@@ -21,7 +21,7 @@ function AllUsers() {
     return (
         <Default>
             <div>
-                <Row justify={'cente'}>
+                <Row justify={'center'}>
                     <Col lg={20} className='d-flex'>
                         <Input style={{width:'70%'}}/>
                     </Col>

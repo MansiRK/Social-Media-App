@@ -18,18 +18,11 @@ function Login() {
                     <Form layout='vertical' className='bs1 p-3' onFinish={login}>
                         <h3>Login</h3>
                         <hr />
-                        <Form.Item label="firstname" name="firstname" rules={[{ require: true }]}>
-                            <Input />
-                        </Form.Item>
-                        <Form.Item label="lastname" name="lastname" rules={[{ require: true }]}>
-                            <Input />
-                        </Form.Item>
+
                         <Form.Item label="username" name="username" rules={[{ require: true }]}>
                             <Input />
                         </Form.Item>
-                        <Form.Item label="emailid" name="emailid" rules={[{ require: true }]}>
-                            <Input />
-                        </Form.Item>
+
                         <Form.Item label="password" name="password" rules={[{ require: true }]}>
                             <Input />
                         </Form.Item>
