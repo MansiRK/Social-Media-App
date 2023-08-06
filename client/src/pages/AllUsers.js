@@ -32,12 +32,12 @@ function AllUsers() {
                         {currentUser._id !== user._id && (
                             <Col lg={5} xs={24} className="text-left">
                             <div className='bs1 p-2 '>
-                                {user.profilePicUrl == "" ? (
+                                {user.profilePicUrl === "" ? (
                                     <p className="profilepic2 d-flex align-items-center">
                                         {user.username[0]}
                                     </p>
                                 ) : (
-                                    <img src={user.profilePicUrl} />
+                                    <img src={user.profilePicUrl} alt="Avatar"/>
                                 )}
                                 <Link>{user.username}</Link>
                                 <p>{moment(user.createdAt).format('MM DD YYYY')}</p>

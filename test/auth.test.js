@@ -1,94 +1,58 @@
-// /* eslint-disable no-unused-expressions */
-// /* eslint-disable import/no-extraneous-dependencies */
-// // register-test.js
-// const mongoose = require("mongoose")
-// const chai = require("chai")
-// const chaiHttp = require("chai-http")
-// const usermodel = require("../models/userModel")
-
-// const { expect } = chai
-// const app = require("../server")
-
-// chai.use(chaiHttp)
-// describe("Authentication of user", () => {
-//   beforeEach(async () => {
-//     await usermodel.deleteMany({}, (error) => {
-//     })
-//   })
-//   describe("POST user", () => {
-//     it("to register a new user", (done) => {
-//       const user = {
-//         firstname: "John",
-//         lastname: "Doe",
-//         username: "johndoe",
-//         email: "john@example.com",
-//         password: "securepassword",
-//         gender: "male",
-//       }
-
-//       chai.request(app)
-//         .post("/register")
-//         .send(user)
-//         .end((error, res) => {
-//           expect(res.body.user).to.have.property("firstname")
-//           expect(res.body.user).to.have.property("lastname")
-//           expect(res.body.user).to.have.property("username")
-//           expect(res.body.user).to.have.property("email")
-//           expect(res.body.user).to.have.property("password")
-//           expect(res.body.user).to.have.property("gender")
-//           expect(res).to.have.status(200)
-//           expect(res.body).to.have.property("user").to.be.an("object")
-//           expect(res.body.message).to.equal("User registered successfully.")
-//           expect(res.body.access_token).to.be.a("string")
-//           expect(res.body.user).to.be.an("object")
-//           expect(res.body).to.have.property("message", "User registered successfully.")
-//           expect(res.body).to.have.property("access_token").to.be.a("string")
-
-//           done()
-//         })
-//     })
-//   })
-// })
-
+/* eslint-disable consistent-return */
+const { expect } = require("chai")
 const request = require("supertest")
-const chai = require("chai")
-// const chaiHttp = require("chai-http")
-// eslint-disable-next-line linebreak-style
-const app = require("../server") // Assuming the server.js file is in the parent directory
-const usermodel = require("../models/userModel")
+const http = require("../server") // Replace with the path to your Express app (where the 'register' function is defined)
 
-const { expect } = chai
+describe("POST /api/auth/register", () => {
+  it("should register a new user and return a 200 status code", (done) => {
+    const user = {
+      firstname: "John",
+      lastname: "Doe",
+      username: "johndoe",
+      email: "johndoe@example.com",
+      password: "testpassword",
+      gender: "male",
+    }
 
-let api
-let accesstoken
-describe("Authentication", () => {
-  before("Initializing API in before block", (done) => {
-    app.then((result) => {
-      api = request(result)
-      done()
-    })
-      .catch(done)
-  })
-
-  it("Post register a user", (done) => {
-    api.post("/api/auth/register")
-      .field("firstname", "John")
-      .field("lastname", "Doe")
-      .field("username", "johndoe")
-      .field("email", "john@example.com")
-      .field("password", "securepassword")
-      .field("gender", "male")
-      .then((response) => {
-        // accesstoken = response.body.data.access_token
-
-        expect(response.status).to.equal(200)
-        expect(response.body).to.have.property("data")
-        expect(response.body).to.have.property("error", null)
-        // expect(response.body.data).to.have.property("access_token")
-        expect(response.body).to.have.property("message", "User registered successfully.")
-
+    request(http)
+      .post("/api/auth/register")
+      .send(user)
+      .end((err, res) => {
+        if (err) return done(err)
+        expect(res.body).to.have.status(200)
+        expect(res.body).to.have.property("message", "User registered successfully.")
+        expect(res.body).to.have.property("access_token")
+        expect(res.body).to.have.property("newUser")
+        expect(res.body.newUser).to.have.property("firstname", user.firstname)
+        expect(res.body.newUser).to.have.property("lastname", user.lastname)
+        expect(res.body.newUser).to.have.property("username", user.username)
+        expect(res.body.newUser).to.have.property("email", user.email)
+        expect(res.body.newUser).to.have.property("password", user.password)
+        expect(res.body.newUser).to.have.property("gender", user.gender)
         done()
       })
-      .catch((error) => done(error))
-  })
+  }).timeout(10000)
+
+  it("should return a 400 status code when registering with an existing username", (done) => {
+    const user = {
+      firstname: "Jane",
+      lastname: "Doe",
+      username: "johndoe", // Existing username, assuming it already exists in the database
+      email: "janedoe@example.com",
+      password: "testpassword",
+      gender: "female",
+    }
+
+    request(http)
+      .post("/api/auth/register")
+      .send(user)
+      .expect(400)
+      .end((err, res) => {
+        if (err) return done(err)
+        expect(res.body).to.have.property("message", "This username already exist. Try with new username.")
+        done()
+      })
+  }).timeout(5000)
+
+  // Add more test cases to cover other scenarios such as existing email, invalid password, etc.
 })

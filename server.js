@@ -24,9 +24,11 @@ const io = require("socket.io")(http, {
   },
 })
 
+const serverSocket = require("./server-socket")
+
 // Create a new connection
 io.on("connection", (socket) => {
-  console.log(socket)
+  serverSocket(socket)
   console.log("A user connected")
 })
 
@@ -51,3 +53,5 @@ http.listen(process.env.PORT, (error) => {
 
   console.log(`Server successfully started at PORT: ${process.env.PORT}`)
 })
+
+module.exports = http
