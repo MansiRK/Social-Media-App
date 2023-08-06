@@ -1,3 +1,5 @@
+/* eslint-disable import/order */
+/* eslint-disable import/no-extraneous-dependencies */
 // Import
 const express = require("express")
 const dotenv = require("dotenv")
@@ -10,6 +12,17 @@ dotenv.config()
 
 // Creating instance of express app
 const app = express()
+
+const http = require("http").createServer(app)
+
+// Attach http server to socket.io
+const io = require("socket.io")(http)
+
+// Create a new connection
+io.on("connection", (socket) => {
+  console.log(socket)
+  console.log("A user connected")
+})
 
 // Middlewares
 app.use(express.json())
@@ -32,5 +45,3 @@ app.listen(process.env.PORT, (error) => {
 
   console.log(`Server successfully started at PORT: ${process.env.PORT}`)
 })
-
-module.exports = app

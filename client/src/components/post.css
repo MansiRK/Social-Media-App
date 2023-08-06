@@ -1,0 +1,28 @@
+.profilepic1{
+        padding-left: 10px;
+        padding-right: 10px;
+        font-weight: bold;
+        font-size:25px;
+        background-color: grey;
+        border-radius: 50%;
+        height:40px;
+        width:40px;
+        color: white;
+        text-align:center;
+        
+}img{
+        border-radius: 5px;
+}
+.postimage{
+        height: 500px;
+        width: 100%;
+        margin-top: 10px;
+}
+p{
+        color: blue;
+        margin: 5px;
+        font-size: 15px;
+}
+.anticon svg {
+font-size: 20px;
+}

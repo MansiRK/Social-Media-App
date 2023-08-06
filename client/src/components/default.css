@@ -1,0 +1,7 @@
+.ant-layout-header div span svg{
+    height: 25px !important;
+    width: 25px !important;
+  }
+  .ant-layout-content{
+    min-height: 90vh !important;
+  }
