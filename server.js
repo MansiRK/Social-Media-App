@@ -16,7 +16,12 @@ const app = express()
 const http = require("http").createServer(app)
 
 // Attach http server to socket.io
-const io = require("socket.io")(http)
+const io = require("socket.io")(http, {
+  pingTimeout: 60000,
+  cors: {
+    origin: "http://localhost:3000",
+  },
+})
 
 // Create a new connection
 io.on("connection", (socket) => {
@@ -38,7 +43,7 @@ app.use("/api/comment", Route.commentRoute)
 connectToDatabase()
 
 // Listening server
-app.listen(process.env.PORT, (error) => {
+http.listen(process.env.PORT, (error) => {
   if (error) {
     console.log("Server unable to start due to error: ", error)
   }

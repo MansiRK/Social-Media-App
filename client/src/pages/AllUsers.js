@@ -40,7 +40,7 @@ function AllUsers() {
                                     <img src={user.profilePicUrl} />
                                 )}
                                 <Link>{user.username}</Link>
-                                <p>{moment(user.createdAt).format('MMM DD yyyy')}</p>
+                                <p>{moment(user.createdAt).format('MM DD YYYY')}</p>
                                 <Button onclick={()=>{dispatch(followUser({currentUserId : currentUser._id, receiverUserId : user._id}))}}>Follow</Button>
                             </div>
                         </Col>
