@@ -14,6 +14,7 @@ dotenv.config()
 const app = express()
 
 const http = require("http").createServer(app)
+const path = require("path")
 
 // Attach http server to socket.io
 const io = require("socket.io")(http, {
@@ -31,6 +32,13 @@ io.on("connection", (socket) => {
   serverSocket(socket)
   console.log("A user connected")
 })
+
+if (process.env.NODE_ENV) {
+  app.use(express.static("client/public"))
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "client/public/index.html"))
+  })
+}
 
 // Middlewares
 app.use(express.json())

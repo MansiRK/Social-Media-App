@@ -12,8 +12,7 @@ export const addPost =(values)=>async dispatch=>{
         message.success('Post added successfully')
         
 
-    } catch (error) {https://github.com/Mitali29052001/MR.git
-        console.log(error)
+    } catch (error) {
         dispatch({type :'LOADING', payload:false})
         dispatch({type:'LOADING' , payload:false})
         message.error('Post not add successfully')
