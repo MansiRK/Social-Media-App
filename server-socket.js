@@ -30,4 +30,44 @@ const ServerSocket = (socket) => {
       socket.to(recipient.socketId).emit("likeToClient", postId)
     })
   })
+
+  socket.on("createComment", (postId, userId) => {
+    const recipients = users.filter((user) => {
+      user.userId === userId || user.userId.followers.includes(userId)
+    })
+
+    recipients.forEach((recipient) => {
+      socket.to(recipient.socketId).emit("createCommentToClient", postId)
+    })
+  })
+
+  socket.on("deleteComment", (postId, userId) => {
+    const recipients = users.filter((user) => {
+      user.userId === userId || user.userId.followers.includes(userId)
+    })
+
+    recipients.forEach((recipient) => {
+      socket.to(recipient.socketId).emit("deleteCommentToClient", postId)
+    })
+  })
+
+  socket.on("followUser", (followerId, followingId) => {
+    const recipients = users.filter((user) => {
+      user.userId === followerId || user.userId === followingId
+    })
+
+    recipients.forEach((recipient) => {
+      socket.to(recipient.socketId).emit("followUserToClient", followerId, followingId)
+    })
+  })
+
+  socket.on("unfollowUser", (followerId, followingId) => {
+    const recipients = users.filter((user) => {
+      user.userId === followerId || user.userId === followingId
+    })
+
+    recipients.forEach((recipient) => {
+      socket.to(recipient.socketId).emit("unfollwoUserToClient", followerId, followingId)
+    })
+  })
 }
