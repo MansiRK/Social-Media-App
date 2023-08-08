@@ -201,7 +201,7 @@ describe("POST /api/auth/logout", () => {
   it("should return 500 error if an error occurs during logout", (done) => {
     request(http)
       .post("/api/auth/logout")
-      .set("cookie", "refresh_token = test_token; Path = /invalid_path")
+      .set("Cookie", "refresh_token = test_token; Path = /invalid_path")
       .expect(500)
       .end((err, res) => {
         if (err) return done(err)
