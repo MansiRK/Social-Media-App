@@ -11,6 +11,7 @@ route.post("/", middleware, postController.createPost)
 route.get("/", middleware, postController.getAllPosts)
 
 route.get("/:id", middleware, postController.getSinglePost)
+
 route.get("/user_post/:id", middleware, postController.getUserPosts)
 
 route.patch("/:id", middleware, postController.updatePost)
